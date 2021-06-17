@@ -1,0 +1,258 @@
+create table Dept2(dno int primary key,dname varchar(20));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "dept2_pkey" for table "dept2"
+CREATE TABLE
+\d Dept2
+            Table "public.dept2"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(20) | 
+Indexes:
+    "dept2_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "nonteaching" CONSTRAINT "nonteaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept2(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+ create table NonTeaching(emp_no int primary key,name varchar(20),address varchar(10),salary int,dno int references Dept2(dno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "nonteaching_pkey" for table "nonteaching"
+CREATE TABLE
+bcafy2=# \d NonTeaching
+         Table "public.nonteaching"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ emp_no  | integer               | not null
+ name    | character varying(20) | 
+ address | character varying(10) | 
+ salary  | integer               | 
+ dno     | integer               | 
+Indexes:
+    "nonteaching_pkey" PRIMARY KEY, btree (emp_no)
+Foreign-key constraints:
+    "nonteaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept2(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+create table Teaching(emp_no int primary key,name varchar(20),address varchar(10),salary int,dno int references Dept2(dno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "teaching_pkey" for table "teaching"
+CREATE TABLE
+bcafy2=# \d Teaching
+           Table "public.teaching"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ emp_no  | integer               | not null
+ name    | character varying(20) | 
+ address | character varying(10) | 
+ salary  | integer               | 
+ dno     | integer               | 
+Indexes:
+    "teaching_pkey" PRIMARY KEY, btree (emp_no)
+Foreign-key constraints:
+    "teaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept2(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+
+
+bcafy2=# insert into Dept2 values(101,'computer');
+INSERT 0 1
+bcafy2=# insert into Dept2 values(102,'maths');
+INSERT 0 1
+bcafy2=# insert into Dept2 values(103,'science');
+INSERT 0 1
+bcafy2=# insert into Dept2 values(104,'electronics');
+INSERT 0 1
+bcafy2=# insert into Dept2 values(105,'microbiology');
+INSERT 0 1
+bcafy2=# select * from Dept2;
+ dno |    dname     
+-----+--------------
+ 101 | computer
+ 102 | maths
+ 103 | science
+ 104 | electronics
+ 105 | microbiology
+(5 rows)
+
+
+
+
+bcafy2=# insert into NonTeaching values(1,'adrita','pune',20000,103);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(2,'rutuja','pune',30000,102);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(3,'shrinivas','beed',15000,102);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(4,'onkar','mumbai',30000,105);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(5,'Rushikesh','mumbai',20000,104);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(6,'Isaac','pune',50000,103);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(7,'Priyanka','pune',40000,102);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(8,'Riya','nashik',30000,105);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(9,'Pranjal','nashik',30000,104);
+INSERT 0 1
+bcafy2=# insert into NonTeaching values(10,'omkar','pune',40000,102);
+INSERT 0 1
+bcafy2=# select * from NonTeaching;
+ emp_no |   name    | address | salary | dno 
+--------+-----------+---------+--------+-----
+      1 | adrita    | pune    |  20000 | 103
+      2 | rutuja    | pune    |  30000 | 102
+      3 | shrinivas | beed    |  15000 | 102
+      4 | onkar     | mumbai  |  30000 | 105
+      5 | Rushikesh | mumbai  |  20000 | 104
+      6 | Isaac     | pune    |  50000 | 103
+      7 | Priyanka  | pune    |  40000 | 102
+      8 | Riya      | nashik  |  30000 | 105
+      9 | Pranjal   | nashik  |  30000 | 104
+     10 | omkar     | pune    |  40000 | 102
+(10 rows)
+
+
+bcafy2=# insert into Teaching values(11,'Aparna','pune',40000,101);
+INSERT 0 1
+bcafy2=# insert into Teaching values(12,'Madhuri','mumbai',40000,101);
+INSERT 0 1
+bcafy2=# insert into Teaching values(13,'Meghna','mumbai',50000,104);
+INSERT 0 1
+bcafy2=# insert into Teaching values(14,'Gauri','mumbai',40000,102);
+INSERT 0 1
+bcafy2=# insert into Teaching values(15,'Sunil','nashik',40000,103);
+INSERT 0 1
+bcafy2=# insert into Teaching values(16,'Nanda','nashik',40000,105);
+INSERT 0 1
+bcafy2=# insert into Teaching values(17,'Yogeshwari','pune',40000,102);
+INSERT 0 1
+bcafy2=# insert into Teaching values(18,'Swapna','pune',40000,103);
+INSERT 0 1
+bcafy2=# insert into Teaching values(19,'Manisha','pune',50000,101);
+INSERT 0 1
+bcafy2=# insert into Teaching values(20,'Neha','pune',50000,104);
+INSERT 0 1
+bcafy2=# select * from Teaching;
+ emp_no |    name    | address | salary | dno 
+--------+------------+---------+--------+-----
+     11 | Aparna     | pune    |  40000 | 101
+     12 | Madhuri    | mumbai  |  40000 | 101
+     13 | Meghna     | mumbai  |  50000 | 104
+     14 | Gauri      | mumbai  |  40000 | 102
+     15 | Sunil      | nashik  |  40000 | 103
+     16 | Nanda      | nashik  |  40000 | 105
+     17 | Yogeshwari | pune    |  40000 | 102
+     18 | Swapna     | pune    |  40000 | 103
+     19 | Manisha    | pune    |  50000 | 101
+     20 | Neha       | pune    |  50000 | 104
+(10 rows)
+
+
+bcafy2=# select emp_no from NonTeaching union select emp_no from Teaching;
+ emp_no 
+--------
+     17
+     10
+     15
+      8
+      6
+      7
+     20
+     11
+     12
+     18
+      2
+     13
+      5
+     19
+     16
+      4
+      1
+      3
+     14
+      9
+(20 rows)
+bcafy2=# select emp_no from NonTeaching union all  select emp_no from Teaching;
+ emp_no 
+--------
+      1
+      2
+      3
+      4
+      5
+      6
+      7
+      8
+      9
+     10
+     11
+     12
+     13
+     14
+     15
+     16
+     17
+     18
+     19
+     20
+(20 rows)
+
+bcafy2=# update NonTeaching set name='Neha' where emp_no=10;
+UPDATE 1
+bcafy2=# select * from NonTeaching;
+ emp_no |   name    | address | salary | dno 
+--------+-----------+---------+--------+-----
+      1 | adrita    | pune    |  20000 | 103
+      2 | rutuja    | pune    |  30000 | 102
+      3 | shrinivas | beed    |  15000 | 102
+      4 | onkar     | mumbai  |  30000 | 105
+      5 | Rushikesh | mumbai  |  20000 | 104
+      6 | Isaac     | pune    |  50000 | 103
+      7 | Priyanka  | pune    |  40000 | 102
+      8 | Riya      | nashik  |  30000 | 105
+      9 | Pranjal   | nashik  |  30000 | 104
+     10 | Neha      | pune    |  40000 | 102
+(10 rows)
+
+bcafy2=# select name from NonTeaching intersect select name from Teaching;
+ name 
+------
+ Neha
+(1 row)
+
+bcafy2=# select name from NonTeaching intersect all select name from Teaching;
+ name 
+------
+ Neha
+(1 row)
+
+
+
+bcafy2=# select name from NonTeaching except select name from Teaching;
+   name    
+-----------
+ Isaac
+ Pranjal
+ Rushikesh
+ adrita
+ Riya
+ onkar
+ Priyanka
+ rutuja
+ shrinivas
+(9 rows)
+
+bcafy2=# select name from NonTeaching except all select name from Teaching;
+   name    
+-----------
+ Isaac
+ Pranjal
+ Rushikesh
+ adrita
+ Riya
+ onkar
+ Priyanka
+ rutuja
+ shrinivas
+(9 rows)
+
+bcafy2=#  
+
+

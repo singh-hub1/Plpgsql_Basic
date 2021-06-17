@@ -1,0 +1,170 @@
+
+bcafy4=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ dloc   | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+                                       ^
+bcafy4=# alter table dept drop column dloc;
+ALTER TABLE
+bcafy4=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+                                                             ^
+bcafy4=# create table teaching(eno int primary key,ename varchar(30),addr varchar(30),salary float,dno int references dept(dno)on delete cascade on update cascade); NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "teaching_pkey" for table "teaching"CREATE TABLE
+bcafy4=# \d teaching
+          Table "public.teaching"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ addr   | character varying(30) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "teaching_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "teaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# create table nonteaching(eno int primary key,ename varchar(30),addr varchar(30),salary float,dno int references dept(dno)on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "nonteaching_pkey" for table "nonteaching"
+CREATE TABLE
+bcafy4=# \d nonteaching
+         Table "public.nonteaching"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ addr   | character varying(30) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "nonteaching_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "nonteaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE 
+                                   ^
+bcafy4=# insert into dept values(10,'physics');
+INSERT 0 1
+bcafy4=# 
+bcafy4=# insert into dept values(50,'stat');
+INSERT 0 1
+bcafy4=# insert into dept values(60,'comp');
+INSERT 0 1
+bcafy4=# insert into teaching values(1,'ajit','pune',5000,10);
+INSERT 0 1
+bcafy4=# insert into teaching values(2,'amit','pune',6000,10);
+INSERT 0 1
+bcafy4=# insert into teaching values(3,'gita','mumbai',7000,50);
+INSERT 0 1
+bcafy4=# insert into teaching values(4,'nita','nashik',8000,60);
+INSERT 0 1
+bcafy4=# insert into teaching values(5,'joshi','pune',9000,60);
+INSERT 0 1
+bcafy4=# \d teaching
+          Table "public.teaching"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ addr   | character varying(30) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "teaching_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "teaching_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# select * from teaching;
+ eno | ename |  addr  | salary | dno 
+-----+-------+--------+--------+-----
+   1 | ajit  | pune   |   5000 |  10
+   2 | amit  | pune   |   6000 |  10
+   3 | gita  | mumbai |   7000 |  50
+   4 | nita  | nashik |   8000 |  60
+   5 | joshi | pune   |   9000 |  60
+(5 rows)
+
+bcafy4=# insert into nonteaching values(11,'naveen','pune',15000,10);
+INSERT 0 1
+bcafy4=# insert into nonteaching values(12,'anita','pune',17000,10);
+INSERT 0 1
+bcafy4=# insert into nonteaching values(13,'joshi','mumbai',18000,50);
+INSERT 0 1
+bcafy4=# insert into nonteaching values(14,'nene','mumbai',19000,60);
+INSERT 0 1
+bcafy4=# insert into nonteaching values(15,'nene','pune',11000,60);
+INSERT 0 1
+bcafy4=# select * from nonteaching;
+ eno | ename  |  addr  | salary | dno 
+-----+--------+--------+--------+-----
+  11 | naveen | pune   |  15000 |  10
+  12 | anita  | pune   |  17000 |  10
+  13 | joshi  | mumbai |  18000 |  50
+  14 | nene   | mumbai |  19000 |  60
+  15 | nene   | pune   |  11000 |  60
+(5 rows)
+
+bcafy4=# select ename  from teaching union select ename from nonteaching;
+ ename  
+--------
+ gita
+ naveen
+ joshi
+ anita
+ nita
+ ajit
+ nene
+ amit
+(8 rows)
+
+bcafy4=# select ename from teaching union all select ename from nonteaching;
+ ename  
+--------
+ ajit
+ amit
+ gita
+ nita
+ joshi
+ naveen
+ anita
+ joshi
+ nene
+ nene
+(10 rows)
+
+bcafy4=# select ename from teaching intersect select ename from nonteaching;
+ ename 
+-------
+ joshi
+(1 row)
+
+bcafy4=# select ename from teaching intersect all select ename from nonteaching;
+ ename 
+-------
+ joshi
+(1 row)
+
+bcafy4=# select ename from teaching except select ename from nonteaching;
+ ename 
+-------
+ gita
+ amit
+ nita
+ ajit
+(4 rows)
+
+ 
+

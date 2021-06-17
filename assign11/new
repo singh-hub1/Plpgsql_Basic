@@ -1,0 +1,44 @@
+REATE TABLE / PRIMARY KEY will create implicit index "movie_pkey" for table "movie"
+CREATE TABLE
+bcafy4=# \d movie
+            Table "public.movie"
+    Column    |       Type       | Modifiers 
+--------------+------------------+-----------
+ movie_name   | integer          | not null
+ release_year | integer          | 
+ budget       | double precision | 
+Indexes:
+    "movie_pkey" PRIMARY KEY, btree (movie_name)
+Check constraints:
+    "movie_budget_check" CHECK (budget > 0::double precision)
+
+bcafy4=# create table actor(actor_name int primary key,role varchar(30),charges int,address varchar(30));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "actor_pkey" for table "actor"
+CREATE TABLE
+bcafy4=# \d actor
+              Table "public.actor"
+   Column   |         Type          | Modifiers 
+------------+-----------------------+-----------
+ actor_name | integer               | not null
+ role       | character varying(30) | 
+ charges    | integer               | 
+ address    | character varying(30) | 
+Indexes:
+    "actor_pkey" PRIMARY KEY, btree (actor_name)
+
+bcafy4=# create table producer(producer_no int primary key,name varchar(30),address varchar(40),age int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "producer_pkey" for table "producer"
+CREATE TABLE
+bcafy4=# \d producer
+             Table "public.producer"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ producer_no | integer               | not null
+ name        | character varying(30) | 
+ address     | character varying(40) | 
+ age         | integer               | 
+Indexes:
+    "producer_pkey" PRIMARY KEY, btree (producer_no)
+
+bcafy4=# create table 
+

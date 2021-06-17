@@ -1,0 +1,64 @@
+create table employee(e_no int,name varchar(30),sal float);
+CREATE TABLE
+bcafy4=# alter table employee add column desg varchar(30);
+ALTER TABLE
+bcafy4=# alter table add check(desg in('manager','clerk'));
+ERROR:  syntax error at or near "check"
+LINE 1: alter table add check(desg in('manager','clerk'));
+                        ^
+bcafy4=# alter table employee  add check(desg in('manager','clerk'));
+ALTER TABLE
+bcafy4=# drop table student;
+DROP TABLE
+bcafy4=# create table student(s_no int,name varchar(30),date_of_birth date);
+CREATE TABLE
+bcafy4=# alter table student add column address text not null;
+ALTER TABLE
+bcafy4=# alter table student add column phone bigint;
+ALTER TABLE
+bcafy4=# \d student
+              Table "public.student"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ s_no          | integer               | 
+ name          | character varying(30) | 
+ date_of_birth | date                  | 
+ address       | text                  | not null
+ phone         | bigint                | 
+
+bcafy4=# \d project
+                 Table "public.project"
+       Column        |         Type          | Modifiers 
+---------------------+-----------------------+-----------
+ project_id          | integer               | not null
+ project_name        | character varying(20) | 
+ project_description | text                  | 
+ status              | boolean               | 
+Indexes:
+    "project_pkey" PRIMARY KEY, btree (project_id)
+
+bcafy4=# alter table project add check(project_name like'R%');
+ALTER TABLE
+bcafy4=# insert into project values(1,'roh','online','true');
+ERROR:  new row for relation "project" violates check constraint "project_project_name_check"
+bcafy4=# select *from project;
+ project_id | project_name | project_description | status 
+------------+--------------+---------------------+--------
+(0 rows)
+
+bcafy4=# \d hospital
+          Table "public.hospital"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ h_no   | integer               | not null
+ h_name | character varying(10) | 
+ h_city | character varying(10) | 
+Indexes:
+    "hospital_pkey" PRIMARY KEY, btree (h_no)
+
+bcafy4=# alter table hospital add column hbudget int;
+ALTER TABLE
+bcafy4=# alter table hospital add check(hbudget>50000);
+ALTER TABLE
+bcafy4=# 
+

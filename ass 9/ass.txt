@@ -1,0 +1,248 @@
+bash-4.1$ psql -h 192.168.5.200
+psql (8.4.18, server 8.4.20)
+Type "help" for help.
+
+
+
+bcafy62=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ dloc   | character varying(10) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+                                      ^
+
+
+bcafy62=# create table emp(eno int primary key,ename varchar(30),salary float,dno int references dept(dno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emp_pkey" for table "emp"
+CREATE TABLE
+bcafy3=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno)  1 | cs      | pune
+   2 | science | kolkata
+(2 rows)
+REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy62=# select * from emp;
+ eno | ename | salary | dno 
+-----+-------+--------+-----
+(0 rows)
+
+
+bcafy62=# select * from dept;
+ dno |  dname  |  dloc   
+-----+---------+---------
+   1 | cs      | pune
+   2 | science | kolkata
+(2 rows)
+
+
+bcafy62=# alter table emp add column address text;
+ALTER TABLE
+bcafy3=# \d emp
+             Table "public.emp"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ eno     | integer               | not null
+ ename   | character varying(30) | 
+ salary  | double precision      | 
+ dno     | integer               | 
+ address | text                  | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy62=# insert into emp values(10,'Adrita',40000,1,'Pune');
+INSERT 0 1
+bcafy62=# insert into emp values(20,'Antara',50000,1,'kolkata');
+INSERT 0 1
+bcafy62=# insert into emp values(30,'Ananya',50000,2,'kolkata');
+INSERT 0 1
+bcafy62=# insert into emp values(40,'Rutuja',70000,2,'Mumbai');
+INSERT 0 1
+bcafy62=# select * from emp where dno=1;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  10 | Adrita |  40000 |   1 | Pune
+  20 | Antara |  50000 |   1 | kolkata
+(2 rows)
+
+bcafy62=# select * from emp where address='Pune' and salary between 30000 and 50000;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  10 | Adrita |  40000 |   1 | Pune
+(1 row)
+
+bcafy62=# 
+select * from emp where ename like '%n%';
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  20 | Antara |  50000 |   1 | kolkata
+  30 | Ananya |  50000 |   2 | kolkata
+(2 rows)
+
+select * from emp where ename like '%an%';
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  30 | Ananya |  50000 |   2 | kolkata
+(1 row)
+
+bcafy62=# select * from emp where salary=50000;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  20 | Antara |  50000 |   1 | kolkata
+  30 | Ananya |  50000 |   2 | kolkata
+(2 rows)
+
+bcafy62=# select * from emp order by eno;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  10 | Adrita |  40000 |   1 | Pune
+  20 | Antara |  50000 |   1 | kolkata
+  30 | Ananya |  50000 |   2 | kolkata
+  40 | Rutuja |  70000 |   2 | Mumbai
+(4 rows)
+
+bcafy62=# select * from emp order by dno,eno desc;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  20 | Antara |  50000 |   1 | kolkata
+  10 | Adrita |  40000 |   1 | Pune
+  40 | Rutuja |  70000 |   2 | Mumbai
+  30 | Ananya |  50000 |   2 | kolkata
+(4 rows)
+
+bcafy62=# select dno as department,count(eno) as total_emp from emp group by dno having count(eno)>1 order by dno;
+ department | total_emp 
+------------+-----------
+          1 |         2
+          2 |         2
+(2 rows)
+bcafy62=# select dno as department,sum(salary) as total from emp group by dno order by dno;
+ department | total  
+------------+--------
+          1 |  90000
+          2 | 120000
+(2 rows)
+bcafy62=# select avg(salary) from emp;
+  avg  
+-------
+ 52500
+(1 row)
+bcafy62=# select dno,min(salary) from emp group by dno;
+ dno |  min  
+-----+-------
+   1 | 40000
+   2 | 50000
+(2 rows)
+ update emp set salary=salary+(0.5*salary) where dno=(select dno from dept where dname='science');
+UPDATE 2
+update emp set dno=(select dno from dept where dname='cs') where dno=(select dno from dept where dname='science');
+UPDATE 2
+bcafy3=# delete from emp where dno=(select dno from dept where dname='science');
+DELETE 0
+bcafy62=# select * from emp;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  10 | Adrita |  40000 |   1 | Pune
+  20 | Antara |  50000 |   1 | kolkata
+  30 | Ananya |  75000 |   1 | kolkata
+  40 | Rutuja | 105000 |   1 | Mumbai
+(4 rows)
+select * from dept;
+ dno |  dname  |  dloc   
+-----+---------+---------
+   1 | cs      | pune
+   2 | science | kolkata
+(2 rows)
+
+bcafy62=# select * from emp;
+ eno | ename  | salary | dno | address 
+-----+--------+--------+-----+---------
+  10 | Adrita |  40000 |   1 | Pune
+  20 | Antara |  50000 |   1 | kolkata
+  30 | Ananya |  75000 |   1 | kolkata
+  40 | Rutuja | 105000 |   1 | Mumbai
+(4 rows)
+
+bcafy62=# insert into dept values(3,'maths','mumbai');
+INSERT 0 1
+bcafy62=# insert into dept values(4,'commerce','mumbai');
+INSERT 0 1
+bcafy62=# insert into dept values(5,'microbiology','pune');
+INSERT 0 1
+bcafy62=# insert into dept values(6,'geography','nashik');
+INSERT 0 1
+bcafy62=# insert into dept values(7,'electronics','pune');
+INSERT 0 1
+bcafy62=# insert into dept values(8,'physics','pune');
+INSERT 0 1
+bcafy62=# insert into dept values(9,'chemistry','kolhapur');
+INSERT 0 1
+bcafy62=# insert into dept values(10,'engineering','satara');
+INSERT 0 1
+bcafy62=# select * from dept;
+ dno |    dname     |   dloc   
+-----+--------------+----------
+   1 | cs           | pune
+   2 | science      | kolkata
+   3 | maths        | mumbai
+   4 | commerce     | mumbai
+   5 | microbiology | pune
+   6 | geography    | nashik
+   7 | electronics  | pune
+   8 | physics      | pune
+   9 | chemistry    | kolhapur
+  10 | engineering  | satara
+(10 rows)
+
+bcafy62=# insert into emp values(50,'Shrinivas',20000,3,pune);
+ERROR:  column "pune" does not exist
+LINE 1: insert into emp values(50,'Shrinivas',20000,3,pune);
+                                                      ^
+bcafy62=# insert into emp values(50,'Shrinivas',20000,3,'pune');
+INSERT 0 1
+bcafy62=# insert into emp values(60,'Vishal',10000,3,'pune');
+INSERT 0 1
+bcafy62=# insert into emp values(70,'Rushi',15000,4,'mumbai');
+INSERT 0 1
+bcafy62=# insert into emp values(80,'Onkar',25000,4,'kolkata');
+INSERT 0 1
+bcafy62=# insert into emp values(90,'Omkar',35000,5,'mumbai');
+INSERT 0 1
+bcafy62=# insert into emp values(100,'Akshay',35000,6,'pune');
+INSERT 0 1
+bcafy62=# select * from emp;
+ eno |   ename   | salary | dno | address 
+-----+-----------+--------+-----+---------
+  10 | Adrita    |  40000 |   1 | Pune
+  20 | Antara    |  50000 |   1 | kolkata
+  30 | Ananya    |  75000 |   1 | kolkata
+  40 | Rutuja    | 105000 |   1 | Mumbai
+  50 | Shrinivas |  20000 |   3 | pune
+  60 | Vishal    |  10000 |   3 | pune
+  70 | Rushi     |  15000 |   4 | mumbai
+  80 | Onkar     |  25000 |   4 | kolkata
+  90 | Omkar     |  35000 |   5 | mumbai
+ 100 | Akshay    |  35000 |   6 | pune
+(10 rows)
+ 
+
+

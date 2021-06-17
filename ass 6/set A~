@@ -1,0 +1,20 @@
+1.
+bcafy2=# create table machine(machine_id int primary key,machine_name varchar(20) not null check(machine_name=upper(machine_name)),machine_type varchar(10) check (machine_type in('drilling','milling','lathe','turning','grinding')),machine_price float check(machine_price>0), machine_cost float check(machine_cost<machine_price));
+
+bcafy2=# \d machine
+              Table "public.machine"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ machine_id    | integer               | not null
+ machine_name  | character varying(20) | not null
+ machine_type  | character varying(10) | 
+ machine_price | double precision      | 
+ machine_cost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (machine_id)
+Check constraints:
+    "machine_check" CHECK (machine_cost < machine_price)
+    "machine_machine_name_check" CHECK (machine_name::text = upper(machine_name::text))
+    "machine_machine_price_check" CHECK (machine_price > 0::double precision)
+    "machine_machine_type_check" CHECK (machine_type::text = ANY (ARRAY['drilling'::character varying, 'milling'::character varying, 'lathe'::character varying, 'turning'::character varying, 'grinding'::character varying]::text[]))
+

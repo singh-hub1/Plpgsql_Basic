@@ -1,0 +1,2 @@
+create table student_b(student_b_id varchar(10) primary key,student_b_name varchar(50) not null check(student_b_name=upper(student_b_name)),student_b_class varchar(10)check(student_b_class in('fy','sy','ty')),student_b_marks float check(student_b_marks > 0),student_b_uid varchar(10) unique,check(student_b_uid!=student_b_id));
+

@@ -1,0 +1,259 @@
+ \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ dloc   | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# \d employee
+          Table "public.employee"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ e_no   | integer               | 
+ name   | character varying(30) | 
+ sal    | double precision      | 
+ adress | character varying(30) | 
+
+bcafy4=# alter table employee add dno;
+ERROR:  syntax error at or near ";"
+LINE 1: alter table employee add dno;
+                                    ^
+bcafy4=# alter table employee add dno int;
+ALTER TABLE
+bcafy4=# \d employee
+          Table "public.employee"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ e_no   | integer               | 
+ name   | character varying(30) | 
+ sal    | double precision      | 
+ adress | character varying(30) | 
+ dno    | integer               | 
+
+bcafy4=# insert into employee values(1,'aditi',45000,'pune',10);
+INSERT 0 1
+bcafy4=# insert into employee values(2,'aditiya',35000,'pune',10);
+INSERT 0 1
+bcafy4=# insert into employee values(3,'rahul',35650,'delhi',20);
+INSERT 0 1
+bcafy4=# insert into employee values(4,'roshni',35450,'delhi',20);
+INSERT 0 1
+bcafy4=# insert into employee values(5,'yashawni',35950,'delhi',30);
+INSERT 0 1
+bcafy4=# insert into employee values(6,'shri',34950,'delhi',40);
+INSERT 0 1
+bcafy4=# insert into employee values(7,'adrita',32150,'delhi',50);
+INSERT 0 1
+bcafy4=# insert into employee values(8,'prateek',328750,'delhi',60);
+INSERT 0 1
+bcafy4=# insert into employee values(9,'prasoon',32750,'delhi',70);
+INSERT 0 1
+bcafy4=# insert into employee values(10,'savri',3750,'pune',70);
+INSERT 0 1
+bcafy4=# select  *from employee;
+ e_no |   name   |  sal   |  adress   | dno 
+------+----------+--------+-----------+-----
+    1 | aditi    |   3400 | pune      |    
+    2 | aditiya  |   3500 | pune      |    
+    3 | vishal   |   3600 | delhi     |    
+    4 | yash     |   3670 | delhi     |    
+    5 | kushal   |   3675 | mumbai    |    
+    6 | rahul    |   3676 | mumbai    |    
+    7 | shri     |   3349 | kolkata   |    
+    8 | savri    |   3654 | karnataka |    
+    9 | rooshni  |   3658 | pune      |    
+   10 | adrita   |   3421 | bihar     |    
+    1 | aditi    |  45000 | pune      |  10
+    2 | aditiya  |  35000 | pune      |  10
+    3 | rahul    |  35650 | delhi     |  20
+    4 | roshni   |  35450 | delhi     |  20
+    5 | yashawni |  35950 | delhi     |  30
+    6 | shri     |  34950 | delhi     |  40
+    7 | adrita   |  32150 | delhi     |  50
+    8 | prateek  | 328750 | delhi     |  60
+    9 | prasoon  |  32750 | delhi     |  70
+   10 | savri    |   3750 | pune      |  70
+(20 rows)
+
+bcafy4=# delete from employee;
+DELETE 20
+bcafy4=# select * from employee;
+ e_no | name | sal | adress | dno 
+------+------+-----+--------+-----
+(0 rows)
+
+bcafy4=# insert into employee values(10,'savri',3750,'pune',70);
+INSERT 0 1
+bcafy4=# delete from employee;
+DELETE 1
+bcafy4=# \d employee
+          Table "public.employee"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ e_no   | integer               | 
+ name   | character varying(30) | 
+ sal    | double precision      | 
+ adress | character varying(30) | 
+ dno    | integer               | 
+
+bcafy4=#  select * from employee;
+ e_no | name | sal | adress | dno 
+------+------+-----+--------+-----
+(0 rows)
+
+bcafy4=# insert into employee values(1,'aditi',45000,'pune',10);
+INSERT 0 1
+bcafy4=# insert into employee values(2,'aditiya',35000,'pune',10);
+INSERT 0 1
+bcafy4=# insert into employee values(3,'rahul',35650,'delhi',20);
+INSERT 0 1
+bcafy4=# insert into employee values(4,'roshni',35450,'delhi',20);
+INSERT 0 1
+bcafy4=# insert into employee values(5,'yashawni',35950,'delhi',30);
+INSERT 0 1
+bcafy4=# insert into employee values(6,'shri',34950,'delhi',40);
+INSERT 0 1
+bcafy4=# insert into employee values(7,'adrita',32150,'delhi',50);
+INSERT 0 1
+bcafy4=# insert into employee values(8,'prateek',328750,'delhi',60);
+INSERT 0 1
+bcafy4=# insert into employee values(9,'prasoon',32750,'delhi',70);
+INSERT 0 1
+bcafy4=# insert into employee values(10,'savri',3750,'pune',70);
+INSERT 0 1
+bcafy4=# select * from employee;
+ e_no |   name   |  sal   | adress | dno 
+------+----------+--------+--------+-----
+    1 | aditi    |  45000 | pune   |  10
+    2 | aditiya  |  35000 | pune   |  10
+    3 | rahul    |  35650 | delhi  |  20
+    4 | roshni   |  35450 | delhi  |  20
+    5 | yashawni |  35950 | delhi  |  30
+    6 | shri     |  34950 | delhi  |  40
+    7 | adrita   |  32150 | delhi  |  50
+    8 | prateek  | 328750 | delhi  |  60
+    9 | prasoon  |  32750 | delhi  |  70
+   10 | savri    |   3750 | pune   |  70
+(10 rows)
+
+bcafy4=# select e_no,name from employee;
+ e_no |   name   
+------+----------
+    1 | aditi
+    2 | aditiya
+    3 | rahul
+    4 | roshni
+    5 | yashawni
+    6 | shri
+    7 | adrita
+    8 | prateek
+    9 | prasoon
+   10 | savri
+(10 rows)
+
+bcafy4=# select distinct dno from employee;
+ dno 
+-----
+  30
+  40
+  20
+  70
+  60
+  50
+  10
+(7 rows)
+
+bcafy4=# select * from employee where dno=10;
+ e_no |  name   |  sal  | adress | dno 
+------+---------+-------+--------+-----
+    1 | aditi   | 45000 | pune   |  10
+    2 | aditiya | 35000 | pune   |  10
+(2 rows)
+
+bcafy4=# select * from employee where address='pune' and sal>32000;
+ERROR:  column "address" does not exist
+LINE 1: select * from employee where address='pune' and sal>32000;
+                                     ^
+bcafy4=# select * from employee where adress='pune' and sal>32000;
+ e_no |  name   |  sal  | adress | dno 
+------+---------+-------+--------+-----
+    1 | aditi   | 45000 | pune   |  10
+    2 | aditiya | 35000 | pune   |  10
+(2 rows)
+
+bcafy4=# select * from employee where adress='pune' and sal between 30000 and 35000;
+ e_no |  name   |  sal  | adress | dno 
+------+---------+-------+--------+-----
+    2 | aditiya | 35000 | pune   |  10
+(1 row)
+
+bcafy4=#  select * from employee where name like 's%';
+ e_no | name  |  sal  | adress | dno 
+------+-------+-------+--------+-----
+    6 | shri  | 34950 | delhi  |  40
+   10 | savri |  3750 | pune   |  70
+(2 rows)
+
+bcafy4=# select * from employee where name like '%as%';
+ e_no |   name   |  sal  | adress | dno 
+------+----------+-------+--------+-----
+    5 | yashawni | 35950 | delhi  |  30
+    9 | prasoon  | 32750 | delhi  |  70
+(2 rows)
+
+bcafy4=# select * from employee where e_no;
+ERROR:  argument of WHERE must be type boolean, not type integer
+LINE 1: select * from employee where e_no;
+                                     ^
+bcafy4=# select * from employee where e_no=1;
+ e_no | name  |  sal  | adress | dno 
+------+-------+-------+--------+-----
+    1 | aditi | 45000 | pune   |  10
+(1 row)
+
+bcafy4=# select * from employee where dno=20;
+ e_no |  name  |  sal  | adress | dno 
+------+--------+-------+--------+-----
+    3 | rahul  | 35650 | delhi  |  20
+    4 | roshni | 35450 | delhi  |  20
+(2 rows)
+
+bcafy4=# select dno as department,sum(sal) as total from emp group by dno order by dno;
+ERROR:  column "dno" does not exist
+LINE 1: select dno as department,sum(sal) as total from emp group by...
+               ^
+bcafy4=# select dno as department,sum(sal) as total from employee group by dno order by dno;
+ department | total  
+------------+--------
+         10 |  80000
+         20 |  71100
+         30 |  35950
+         40 |  34950
+         50 |  32150
+         60 | 328750
+         70 |  36500
+(7 rows)
+
+bcafy4=# select avg(sal) from employee;
+  avg  
+-------
+ 61940
+(1 row)
+
+bcafy4=# select min(sal) from employee;
+ min  
+------
+ 3750
+(1 row)
+
+bcafy4=# update employee set sal=sal+0.5*sal;
+UPDATE 10
+bcafy4=# delete from employee;
+DELETE 10
+bcafy4=# 
+

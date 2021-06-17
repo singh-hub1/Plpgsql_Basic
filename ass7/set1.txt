@@ -1,0 +1,27 @@
+setA-------
+ 1)create table supplier_master(supplier_no int,supplier_name varchar(50),city varchar(10),phone_no int,amount float);
+CREATE TABLE
+bcafy4=# \d supplier_master
+          Table "public.supplier_master"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ supplier_no   | integer               | 
+ supplier_name | character varying(50) | 
+ city          | character varying(10) | 
+ phone_no      | integer               | 
+ amount        | double precision      | 
+====================================================================================================================================================================
+alter table supplier_master add primary key(supplier_no);
+ \d supplier_master
+          Table "public.supplier_master"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ supplier_no   | integer               | not null
+ supplier_name | character varying(50) | 
+ city          | character varying(10) | 
+ phone_no      | integer               | 
+ amount        | double precision      | 
+Indexes:
+    "supplier_master_pkey" PRIMARY KEY, btree (supplier_no)
+
+

@@ -1,0 +1,22 @@
+bcafy2=# create table student_b(student_b_id varchar(10) primary key,student_b_name varchar(50) not null check(student_b_name=upper(student_b_name)),student_b_class varchar(10)check(student_b_class in('fy','sy','ty')),student_b_marks float check(student_b_marks > 0),student_b_uid varchar(10) unique,check(student_b_uid!=student_b_id));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "student_b_pkey" for table "student_b"
+NOTICE:  CREATE TABLE / UNIQUE will create implicit index "student_b_student_b_uid_key" for table "student_b"
+CREATE TABLE
+bcafy2=# \d student_b
+              Table "public.student_b"
+     Column      |         Type          | Modifiers 
+-----------------+-----------------------+-----------
+ student_b_id    | character varying(10) | not null
+ student_b_name  | character varying(50) | not null
+ student_b_class | character varying(10) | 
+ student_b_marks | double precision      | 
+ student_b_uid   | character varying(10) | 
+Indexes:
+    "student_b_pkey" PRIMARY KEY, btree (student_b_id)
+    "student_b_student_b_uid_key" UNIQUE, btree (student_b_uid)
+Check constraints:
+    "student_b_check" CHECK (student_b_uid::text <> student_b_id::text)
+    "student_b_student_b_class_check" CHECK (student_b_class::text = ANY (ARRAY['fy'::character varying, 'sy'::character varying, 'ty'::character varying]::text[]))
+    "student_b_student_b_marks_check" CHECK (student_b_marks > 0::double precision)
+    "student_b_student_b_name_check" CHECK (student_b_name::text = upper(student_b_name::text))
+

@@ -1,0 +1,77 @@
+bcafy2=# create table property(property_id int primary key,property_desc text not null,area float,rate int,agri_status boolean);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "property_pkey" for table "property"
+CREATE TABLE
+bcafy2=# \d 
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | books         | table | bcafy2
+ public | client_master | table | bcafy2
+ public | donor         | table | bcafy2
+ public | emp           | table | bcafy2
+ public | inventory     | table | bcafy2
+ public | player        | table | bcafy2
+ public | project       | table | bcafy2
+ public | property      | table | bcafy2
+ public | sales_order   | table | bcafy2
+ public | sales_order1  | table | bcafy2
+ public | student       | table | bcafy2
+(11 rows)
+
+bcafy2=# /d
+bcafy2-# /d property
+bcafy2-# ^C
+bcafy2=# \d property
+           Table "public.property"
+    Column     |       Type       | Modifiers 
+---------------+------------------+-----------
+ property_id   | integer          | not null
+ property_desc | text             | not null
+ area          | double precision | 
+ rate          | integer          | 
+ agri_status   | boolean          | 
+Indexes:
+    "property_pkey" PRIMARY KEY, btree (property_id)
+
+bcafy2=# create table actor(actor_id int primary key,actor_name varchar(20),birth_date date);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "actor_pkey" for table "actor"
+CREATE TABLE
+bcafy2=# \d actor
+              Table "public.actor"
+   Column   |         Type          | Modifiers 
+------------+-----------------------+-----------
+ actor_id   | integer               | not null
+ actor_name | character varying(20) | 
+ birth_date | date                  | 
+Indexes:
+    "actor_pkey" PRIMARY KEY, btree (actor_id)
+
+
+bcafy2=# create table movie(movie_no int primary key,name varchar(20),release_year int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "movie_pkey" for table "movie"
+CREATE TABLE
+bcafy2=# \d movie
+               Table "public.movie"
+    Column    |         Type          | Modifiers 
+--------------+-----------------------+-----------
+ movie_no     | integer               | not null
+ name         | character varying(20) | 
+ release_year | integer               | 
+Indexes:
+    "movie_pkey" PRIMARY KEY, btree (movie_no)
+
+bcafy2=# create table hospital(h_no int primary key,h_name varchar(20),h_city int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "hospital_pkey" for table "hospital"
+CREATE TABLE
+bcafy2=# \d hospital
+          Table "public.hospital"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ h_no   | integer               | not null
+ h_name | character varying(20) | 
+ h_city | integer               | 
+Indexes:
+    "hospital_pkey" PRIMARY KEY, btree (h_no)
+
+bcafy2=# 
+

@@ -1,0 +1,40 @@
+\d employee
+          Table "public.employee"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ e_no   | integer               | 
+ name   | character varying(30) | 
+ sal    | double precision      | 
+ desg   | character varying(30) | 
+Check constraints:
+    "employee_desg_check" CHECK (desg::text = ANY (ARRAY['manager'::character varying, 'clerk'::character varying]::text[]))
+
+bcafy4=# \d 
+
+
+
+
+
+create table supplier_master(supplier_no int,supplier_name varchar(30),city varchar(30),phone_no bigint,amount float);
+ERROR:  relation "supplier_master" already exists
+bcafy4=# drop table supplier_master;
+DROP TABLE
+bcafy4=# create table supplier_master(supplier_no int,supplier_name varchar(30),city varchar(30),phone_no bigint,amount float);
+CREATE TABLE
+bcafy4=# alter table supplier_master add primary key(supplier_no);
+NOTICE:  ALTER TABLE / ADD PRIMARY KEY will create implicit index "supplier_master_pkey" for table "supplier_master"
+ALTER TABLE
+bcafy4=# alter table supplier_master add check(city in('pune','mumbai','kolkata'));
+ALTER TABLE
+bcafy4=# alter table supplier_master drop column p_no;
+ERROR:  column "p_no" of relation "supplier_master" does not exist
+bcafy4=# alter table supplier_master drop column phone_no;
+ALTER TABLE
+bcafy4=# alter table supplier_master drop constraint supplier_master_city_check;
+ALTER TABLE
+bcafy4=# drop table supplier_master;
+DROP TABLE
+bcafy4=# 
+
+
+

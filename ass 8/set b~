@@ -1,0 +1,246 @@
+bcafy2=# create table owner(oname varchar(20) primary key ,address varchar(50),phone int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "owner_pkey" for table "owner"
+CREATE TABLE
+bcafy2=# \d owner
+            Table "public.owner"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ oname   | character varying(20) | not null
+ address | character varying(50) | 
+ phone   | integer               | 
+Indexes:
+    "owner_pkey" PRIMARY KEY, btree (oname)
+
+**************************************************************************************************************************************************
+
+bcafy2=# create table property_1(pno int primary key,descriptiom text,area varchar(30),oname varchar(20) references owner(oname) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "property_1_pkey" for table "property_1"
+CREATE TABLE
+bcafy2=# \d property_1
+            Table "public.property_1"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ pno         | integer               | not null
+ descriptiom | text                  | 
+ area        | character varying(30) | 
+ oname       | character varying(20) | 
+Indexes:
+    "property_1_pkey" PRIMARY KEY, btree (pno)
+Foreign-key constraints:
+    "property_1_oname_fkey" FOREIGN KEY (oname) REFERENCES owner(oname) ON UPDATE CASCADE ON DELETE CASCADE
+
+***************************************************************************************************************************************************
+
+bcafy2=#  insert into owner values('kushal','warje',47448);
+INSERT 0 1
+bcafy2=# select * from owner;
+ oname  | address | phone 
+--------+---------+-------
+ kushal | warje   | 47448
+(1 row)
+
+bcafy2=#  insert into owner values('vishal','karvenagar',4734728);
+INSERT 0 1
+bcafy2=#  insert into owner values('shrinivas','dp_road',43246928);
+INSERT 0 1
+bcafy2=#  insert into owner values('agashe','kothrud',56746928);
+INSERT 0 1
+bcafy2=# select * from owner;
+   oname   |  address   |  phone   
+-----------+------------+----------
+ kushal    | warje      |    47448
+ vishal    | karvenagar |  4734728
+ shrinivas | dp_road    | 43246928
+ agashe    | kothrud    | 56746928
+(4 rows)
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+bcafy2=#  insert into property_1 values(2,'2bhk','mumbai','kushal');
+INSERT 0 1
+bcafy2=#  insert into property_1 values(3,'3bhk','pune','vishal');
+INSERT 0 1
+bcafy2=#  insert into property_1 values(4,'4bhk','nsk','shrinivas');
+INSERT 0 1
+bcafy2=#  insert into property_1 values(5,'5bhk','latur','agashe');
+INSERT 0 1
+bcafy2=# select * from property_1;
+ pno | descriptiom |  area  |   oname   
+-----+-------------+--------+-----------
+   2 | 2bhk        | mumbai | kushal
+   3 | 3bhk        | pune   | vishal
+   4 | 4bhk        | nsk    | shrinivas
+   5 | 5bhk        | latur  | agashe
+(4 rows)
+***********************************************************************************************************************************************
+
+bcafy2=# update owner set phone=97669 where oname='vishal';
+UPDATE 1
+bcafy2=# select * from owner;
+   oname   |  address   |  phone   
+-----------+------------+----------
+ kushal    | warje      |    47448
+ shrinivas | dp_road    | 43246928
+ agashe    | kothrud    | 56746928
+ vishal    | karvenagar |    97669
+(4 rows)
+
+**************************************************************************************************************************************************
+
+bcafy2=# delete from property_1 where oname='kushal' and area='mumbai';
+DELETE 1
+bcafy2=# select * from property_1;
+ pno | descriptiom | area  |   oname   
+-----+-------------+-------+-----------
+   3 | 3bhk        | pune  | vishal
+   4 | 4bhk        | nsk   | shrinivas
+   5 | 5bhk        | latur | agashe
+(3 rows)
+
+****************************************************************************************************************************************************
+2.
+
+bcafy2=# create table dept(dno int primary key,dname varchar(30),loc varchar(30));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "dept_pkey" for table "dept"
+CREATE TABLE
+bcafy2=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ loc    | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+
+***********************************************************************************************************************************************************
+
+
+bcafy2=# create table emp(eno int primary key,ename varchar(30),desg varchar(20),salary float,dno int references dept(dno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emp_pkey" for table "emp"
+CREATE TABLE
+bcafy2=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ desg   | character varying(20) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+***************************************************************************************************************************************************************
+bcafy2=# select * from dept;
+ dno |    dname    |     loc     
+-----+-------------+-------------
+   2 | sales       | firstfloor
+   3 | datanalysis | secondfloor
+   4 | legal       | thirdfloor
+   5 | management  | forthfloor
+(4 rows)
+
+*****************************************************************************************************************************************************************
+bcafy2=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(30) | 
+ desg   | character varying(20) | 
+ salary | double precision      | 
+ dno    | integer               | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy2=# select * from emp;
+ eno | ename | desg | salary | dno 
+-----+-------+------+--------+-----
+(0 rows)
+
+
+bcafy2=# insert into emp values(11,'kushal','stratergist',4000,2);
+INSERT 0 1
+bcafy2=# insert into emp values(12,'shrinivas','clerk',5000,3);
+INSERT 0 1
+bcafy2=# insert into emp values(13,'agashe','manager',8000,4);
+INSERT 0 1
+bcafy2=# insert into emp values(14,'akshay','clerk',25000,4);
+INSERT 0 1
+bcafy2=# select * from emp;
+ eno |   ename   |    desg     | salary | dno 
+-----+-----------+-------------+--------+-----
+  11 | kushal    | stratergist |   4000 |   2
+  12 | shrinivas | clerk       |   5000 |   3
+  13 | agashe    | manager     |   8000 |   4
+  14 | akshay    | clerk       |  25000 |   4
+(4 rows)
+
+bcafy2=# insert into emp values(15,'dgqwe','boss',23000,5);
+INSERT 0 1
+bcafy2=# insert into emp values(16,'ak','peon',3000,5);
+INSERT 0 1
+bcafy2=# select * from emp;
+ eno |   ename   |    desg     | salary | dno 
+-----+-----------+-------------+--------+-----
+  11 | kushal    | stratergist |   4000 |   2
+  12 | shrinivas | clerk       |   5000 |   3
+  13 | agashe    | manager     |   8000 |   4
+  14 | akshay    | clerk       |  25000 |   4
+  15 | dgqwe     | boss        |  23000 |   5
+  16 | ak        | peon        |   3000 |   5
+(6 rows)
+********************************************************************************************************************************************************************
+bcafy2=# update emp set salary = salary +(salary * 0.15) where desg='manager';
+UPDATE 1
+bcafy2=# select * from emp;
+ eno |   ename   |    desg     | salary | dno 
+-----+-----------+-------------+--------+-----
+  11 | kushal    | stratergist |   4000 |   2
+  12 | shrinivas | clerk       |   5000 |   3
+  14 | akshay    | clerk       |  25000 |   4
+  15 | dgqwe     | boss        |  23000 |   5
+  16 | ak        | peon        |   3000 |   5
+  13 | agashe    | manager     |   9200 |   4
+(6 rows)
+*********************************************************************************************************************************************************************
+
+bcafy2=# delete from emp where dno=4;
+DELETE 2
+bcafy2=# select * from emp;
+ eno |   ename   |    desg     | salary | dno 
+-----+-----------+-------------+--------+-----
+  11 | kushal    | stratergist |   4000 |   2
+  12 | shrinivas | clerk       |   5000 |   3
+  15 | dgqwe     | boss        |  23000 |   5
+  16 | ak        | peon        |   3000 |   5
+(4 rows)
+
+bcafy2=# delete from emp where desg='peon';
+DELETE 1
+bcafy2=# select * from emp;
+ eno |   ename   |    desg     | salary | dno 
+-----+-----------+-------------+--------+-----
+  11 | kushal    | stratergist |   4000 |   2
+  12 | shrinivas | clerk       |   5000 |   3
+  15 | dgqwe     | boss        |  23000 |   5
+(3 rows)
+
+
+                       ^
+bcafy2=# update dept set loc = 'kolkata' where dno=2;
+UPDATE 1
+bcafy2=# select * from dept;
+ dno |    dname    |     loc     
+-----+-------------+-------------
+   3 | datanalysis | secondfloor
+   4 | legal       | thirdfloor
+   5 | management  | forthfloor
+   2 | sales       | kolkata
+(4 rows)
+*****************************************************************************************************************************************************************

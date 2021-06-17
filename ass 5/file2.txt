@@ -1,0 +1,122 @@
+Type "help" for help.
+
+bcafy4=# create table property(propery id primary key,property_desc,area,rate,agri_status);
+ERROR:  syntax error at or near ","
+LINE 1: ...able property(propery id primary key,property_desc,area,rate...
+                                                             ^
+bcafy4=# create table property(propery_id primary key,property_desc,area,rate,agri_status);
+ERROR:  syntax error at or near "primary"
+LINE 1: create table property(propery_id primary key,property_desc,a...
+                                         ^
+bcafy4=# create table property(propery id int primary key,property_desc varchar(50),area int,rate int,agri_status boolean);
+ERROR:  syntax error at or near "int"
+LINE 1: create table property(propery id int primary key,property_de...
+ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------                                        ^
+bcafy4=# create table property(propery_id int primary key,property_desc varchar(50),area int,rate int,agri_status boolean);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "property_pkey" for table "property"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | donor         | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | property      | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(10 rows)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table actor(actor_id int primary key,actor_name varchar(50),birth_date int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "actor_pkey" for table "actor"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | actor         | table | bcafy4
+ public | client_master | table | bcafy4
+ public | donor         | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | property      | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(11 rows)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table movie(movie_no int primary key,name varchar(10),release year int);
+ERROR:  syntax error at or near "int"
+LINE 1: ...movie_no int primary key,name varchar(10),release year int);
+                                                                  ^
+bcafy4=# create table movie(movie_no int primary key,name varchar(10),releaseyear int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "movie_pkey" for table "movie"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | actor         | table | bcafy4
+ public | client_master | table | bcafy4
+ public | donor         | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | movie         | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | property      | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(12 rows)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table hospital(h_no int primary key,h_name varchar(10),h_city varchar(10));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "hospital_pkey" for table "hospital"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | actor         | table | bcafy4
+ public | client_master | table | bcafy4
+ public | donor         | table | bcafy4
+ public | emp           | table | bcafy4
+ public | hospital      | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | movie         | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | property      | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(13 rows)
+
+bcafy4=# create table Machine(Machine_id int primary key,Machine_name varchar(50) not null check(Machine_name=upper(Machine_name)),Machine_type varchar(10) check( Machine_type in('drilling','milling','lathe','turning','grinding')),Machine_price float check(Machine_price>0),Machine_cost float check(Machine_cost<Machine_price));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "machine_pkey" for table "machine"
+CREATE TABLE
+bcafy4=# \d machine
+              Table "public.machine"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ machine_id    | integer               | not null
+ machine_name  | character varying(50) | not null
+ machine_type  | character varying(10) | 
+ machine_price | double precision      | 
+ machine_cost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (ma 
+create table student1(stud_id int primary key,stud_name varchar(50) not null check(stud_name=upper(stud_name)),stud_class varchar(10) check(stud_class in('FY','SY','TY')),stud_Marks float check(stud_marks>0),stud_uid int unique,check(stud_uid!=stud_id));
+chine_id)
+Check constraints:
+    "machine_check" CHECK (machine_cost < machine_price)
+    "machine_machine_name_check" CHECK (machine_name::text = upper(machine_name::text))
+    "machine_machine_price_check" CHECK (machine_price > 0::double precision)
+    "machine_machine_type_check" CHECK (machine_type::text = ANY (ARRAY['drilling'::character varying, 'milling'::character varying, 'lathe'::character varying, 'turning'::character varying, 'grinding'::character varying]::text[]))
+

@@ -1,0 +1,300 @@
+bcafy4=# \d emp
+               Table "public.emp"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ eno         | integer               | not null
+ ename       | character varying(50) | 
+ designation | character varying(50) | 
+ sal         | double precision      | 
+ dno         | integer               | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# alter table emp add column address text;
+ALTER TABLE
+bcafy4=# \d emp
+               Table "public.emp"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ eno         | integer               | not null
+ ename       | character varying(50) | 
+ designation | character varying(50) | 
+ sal         | double precision      | 
+ dno         | integer               | 
+ address     | text                  | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(50) | 
+ dloc   | text                  | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp" CONSTRAINT "emp_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# select * from dept;
+ dno |   dname    |  dloc   
+-----+------------+---------
+  10 | finance    | pune
+  30 | production | pune
+  20 | inventory  | kolkata
+(3 rows)
+
+bcafy4=# insert into emp values(1,'candy','manager',20000,10,'pune');
+INSERT 0 1
+bcafy4=# insert into emp values(2,'candice','clerk',15000,10,'pune');
+INSERT 0 1
+bcafy4=# insert into emp values(3,'chandler','staff',25000,10,'pune');
+INSERT 0 1
+bcafy4=# insert into emp values(4,'atharv','CEO',40000,20,'pune');
+INSERT 0 1
+bcafy4=# insert into emp values(5,'ishann','CFO',30000,20,'pune');
+bcafy4=# insert into emp (eno,ename,designation,dno,address)values(6,'gaurav','staff',20,'pune');
+INSERT 0 1
+bcafy4=# insert into emp (eno,ename,designation,dno,address)values(7,'vedang','staff',30,'pune');
+INSERT 0 1
+bcafy4=# insert into emp values(8,'shreyas','director',35000,30,'kolkata');
+INSERT 0 1
+bcafy4=# insert into emp values(9,'mayur','asst.manager',25000,30,'kolkata');
+INSERT 0 1
+bcafy4=# insert into emp values(10,'pruthvi','manager',30000,30,'kolkata');
+INSERT 0 1
+bcafy4=# select * from emp;
+ eno |  ename   | designation  |  sal  | dno | address 
+-----+----------+--------------+-------+-----+---------
+   1 | candy    | manager      | 20000 |  10 | pune
+   2 | candice  | clerk        | 15000 |  10 | pune
+   3 | chandler | staff        | 25000 |  10 | pune
+   4 | atharv   | CEO          | 40000 |  20 | pune
+   5 | ishann   | CFO          | 30000 |  20 | pune
+   6 | gaurav   | staff        |       |  20 | pune
+   7 | vedang   | staff        |       |  30 | pune
+   8 | shreyas  | director     | 35000 |  30 | kolkata
+   9 | mayur    | asst.manager | 25000 |  30 | kolkata
+  10 | pruthvi  | manager      | 30000 |  30 | kolkata
+(10 rows)
+
+bcafy4=# select eno from emp;
+ eno 
+-----
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+   8
+   9
+  10
+(10 rows)
+
+bcafy4=# select ename from emp;
+  ename   
+----------
+ candy
+ candice
+ chandler
+ atharv
+ ishann
+ gaurav
+ vedang
+ shreyas
+ mayur
+ pruthvi
+(10 rows)
+
+bcafy4=# select distinct dno from emp;
+ dno 
+-----
+  30
+  20
+  10
+(3 rows)
+bcafy4=# select * from emp where dno=10;
+ eno |  ename   | designation |  sal  | dno | address 
+-----+----------+-------------+-------+-----+---------
+   1 | candy    | manager     | 20000 |  10 | pune
+   2 | candice  | clerk       | 15000 |  10 | pune
+   3 | chandler | staff       | 25000 |  10 | pune
+(3 rows)
+
+bcafy4=# select * from emp where address='pune' and sal>25000;
+ eno | ename  | designation |  sal  | dno | address 
+-----+--------+-------------+-------+-----+---------
+   4 | atharv | CEO         | 40000 |  20 | pune
+   5 | ishann | CFO         | 30000 |  20 | pune
+(2 rows)
+
+bcafy4=# select * from emp where address='pune' and sal between 20000 and 50000;
+ eno |  ename   | designation |  sal  | dno | address 
+-----+----------+-------------+-------+-----+---------
+   1 | candy    | manager     | 20000 |  10 | pune
+   3 | chandler | staff       | 25000 |  10 | pune
+   4 | atharv   | CEO         | 40000 |  20 | pune
+   5 | ishann   | CFO         | 30000 |  20 | pune
+(4 rows)
+
+bcafy4=# select * from emp where ename like 'can%';
+ eno |  ename  | designation |  sal  | dno | address 
+-----+---------+-------------+-------+-----+---------
+   1 | candy   | manager     | 20000 |  10 | pune
+   2 | candice | clerk       | 15000 |  10 | pune
+(2 rows)
+
+bcafy4=# select * from emp where ename like '%and%';
+ eno |  ename   | designation |  sal  | dno | address 
+-----+----------+-------------+-------+-----+---------
+   1 | candy    | manager     | 20000 |  10 | pune
+   2 | candice  | clerk       | 15000 |  10 | pune
+   3 | chandler | staff       | 25000 |  10 | pune
+(3 rows)
+
+bcafy4=# select * from emp where sal is null;
+ eno | ename  | designation | sal | dno | address 
+-----+--------+-------------+-----+-----+---------
+   6 | gaurav | staff       |     |  20 | pune
+   7 | vedang | staff       |     |  30 | pune
+(2 rows)
+
+bcafy4=# select * from emp order by eno;
+ eno |  ename   | designation  |  sal  | dno | address 
+-----+----------+--------------+-------+-----+---------
+   1 | candy    | manager      | 20000 |  10 | pune
+   2 | candice  | clerk        | 15000 |  10 | pune
+   3 | chandler | staff        | 25000 |  10 | pune
+   4 | atharv   | CEO          | 40000 |  20 | pune
+   5 | ishann   | CFO          | 30000 |  20 | pune
+   6 | gaurav   | staff        |       |  20 | pune
+   7 | vedang   | staff        |       |  30 | pune
+   8 | shreyas  | director     | 35000 |  30 | kolkata
+   9 | mayur    | asst.manager | 25000 |  30 | kolkata
+  10 | pruthvi  | manager      | 30000 |  30 | kolkata
+(10 rows)
+bcafy4=# select * from emp order by dno,eno desc;
+ eno |  ename   | designation  |  sal  | dno | address 
+-----+----------+--------------+-------+-----+---------
+   3 | chandler | staff        | 25000 |  10 | pune
+   2 | candice  | clerk        | 15000 |  10 | pune
+   1 | candy    | manager      | 20000 |  10 | pune
+   6 | gaurav   | staff        |       |  20 | pune
+   5 | ishann   | CFO          | 30000 |  20 | pune
+   4 | atharv   | CEO          | 40000 |  20 | pune
+  10 | pruthvi  | manager      | 30000 |  30 | kolkata
+   9 | mayur    | asst.manager | 25000 |  30 | kolkata
+   8 | shreyas  | director     | 35000 |  30 | kolkata
+   7 | vedang   | staff        |       |  30 | pune
+(10 rows)
+bcafy4=# select dno as dept,sum(sal) as total from emp group by dno order by dno;
+ dept | total 
+------+-------
+   10 | 60000
+   20 | 70000
+   30 | 90000
+(3 rows)
+bcafy4=# select dno as dept,count(eno) as total_emp from emp group by dno having count(eno)>2 order by dno;
+ dept | total_emp 
+------+-----------
+   10 |         3
+   20 |         3
+   30 |         4
+(3 rows)
+bcafy4=# select avg(sal) from emp;
+  avg  
+-------
+ 27500
+(1 row)
+
+bcafy4=# select avg(sal) from emp;
+  avg  
+-------
+ 27500
+(1 row)
+
+bcafy4=# bcafy4=# select * from employee2 where dept_no=30;
+ emp_no | emp_name | address | city | birth_date | designation | salary | dept_no 
+--------+----------+---------+------+------------+-------------+--------+---------
+     12 | shelke   | nahre   | pune | 2000-06-26 | worker      |   5000 |      30
+     13 | sanket   | nahre   | pune | 2000-09-24 | worker      |   6000 |      30
+     11 | amar     | katraj  | pune | 2002-12-20 | manager     |  55000 |      30
+(3 rows)
+
+ having max(sal)>20000;
+  max  | dno 
+-------+-----
+ 35000 |  30
+ 40000 |  20
+ 25000 |  10
+(3 rows)
+
+bcafy4=# select dno,min(sal) from emp group by dno;
+ dno |  min  
+-----+-------
+  30 | 25000
+  20 | 30000
+  10 | 15000
+(3 rows)
+
+bcafy4=# select * from emp;
+ eno |  ename   | designation  |  sal  | dno | address 
+-----+----------+--------------+-------+-----+---------
+   1 | candy    | manager      | 20000 |  10 | pune
+   2 | candice  | clerk        | 15000 |  10 | pune
+   3 | chandler | staff        | 25000 |  10 | pune
+   4 | atharv   | CEO          | 40000 |  20 | pune
+   5 | ishann   | CFO          | 30000 |  20 | pune
+   6 | gaurav   | staff        |       |  20 | pune
+   7 | vedang   | staff        |       |  30 | pune
+   8 | shreyas  | director     | 35000 |  30 | kolkata
+   9 | mayur    | asst.manager | 25000 |  30 | kolkata
+  10 | pruthvi  | manager      | 30000 |  30 | kolkata
+(10 rows)
+bcafy4=# update emp set sal =sal+0.5*sal where dno=10;
+\UPDATE 3
+bcafy4=# select sal from emp where dno=10;
+  sal  
+-------
+ 30000
+ 22500
+ 37500
+(3 rows)
+bcafy4=# update emp set dno=10 where dno=20;
+UPDATE 3
+bcafy4=# select * from emp;
+ eno |  ename   | designation  |  sal  | dno | address 
+-----+----------+--------------+-------+-----+---------
+   1 | candy    | manager      | 30000 |  10 | pune
+   2 | candice  | clerk        | 22500 |  10 | pune
+   3 | chandler | staff        | 37500 |  10 | pune
+   9 | mayur    | asst.manager | 25000 |  30 | kolkata
+  10 | pruthvi  | manager      | 30000 |  30 | kolkata
+   8 | shreyas  | director     | 35000 |  30 | kolkata
+   7 | vedang   | staff        |       |  30 | pune
+   4 | atharv   | CEO          | 40000 |  10 | pune
+   5 | ishann   | CFO          | 30000 |  10 | pune
+   6 | gaurav   | staff        |       |  10 | pune
+(10 rows)
+
+bcafy4=# delete from emp where dno=30;
+DELETE 4
+bcafy4=# select * from emp;
+ eno |  ename   | designation |  sal  | dno | address 
+-----+----------+-------------+-------+-----+---------
+   1 | candy    | manager     | 30000 |  10 | pune
+   2 | candice  | clerk       | 22500 |  10 | pune
+   3 | chandler | staff       | 37500 |  10 | pune
+   4 | atharv   | CEO         | 40000 |  10 | pune
+   5 | ishann   | CFO         | 30000 |  10 | pune
+   6 | gaurav   | staff       |       |  10 | pune
+(6 rows)
+
+

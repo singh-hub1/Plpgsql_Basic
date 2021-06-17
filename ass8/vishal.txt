@@ -1,0 +1,277 @@
+bcafy4=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ dloc   | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(50) | 
+ salary | double precision      | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+
+bcafy4=# insert into dept values(30,'sales');
+
+bcafy4=# select * from dept;
+ dno |  dname  | dloc 
+-----+---------+------
+  30 | sales   | 
+  20 | account | 
+(2 rows)
+
+bcafy4=# update dept set dloc='mumbai' where dno=30;
+UPDATE 1
+bcafy4=# update dept set dloc='pune' where dno=20;
+UPDATE 1
+bcafy4=# select *from dept;
+ dno |  dname  |  dloc  
+-----+---------+--------
+  30 | sales   | mumbai
+  20 | account | pune
+(2 rows)
+
+bcafy4=# select * from emp1;
+ eno | ename  | designation |  sal  | dno 
+-----+--------+-------------+-------+-----
+  10 | vishal | professor   | 70000 |  20
+(1 row)
+
+bcafy4=# insert into emp1 values(20,'aditi','manager',80000,20);
+INSERT 0 1
+bcafy4=# insert into emp1 values(40,'aditiya','manager',90000,30);
+INSERT 0 1
+bcafy4=# insert into emp1 values(50,'kushal','clerk',10000,30);
+INSERT 0 1
+bcafy4=# insert into emp1 values(60,'rahul','assistant manager',40000,30);
+INSERT 0 1
+
+bcafy4=# update emp1 set sal=sal+(sal*0.15) where designation='manager';
+UPDATE 2
+bcafy4=# delete from emp1 where dno=30;
+DELETE 3
+bcafy4=# delete from emp1 where designation='clerk';
+DELETE 0
+bcafy4=# update dept set dloc='pune' where dno=20;
+UPDATE 1
+bcafy4=# select *from emp1;
+ eno | ename  | designation |  sal  | dno 
+-----+--------+-------------+-------+-----
+  10 | vishal | professor   | 70000 |  20
+  20 | aditi  | manager     | 92000 |  20
+(2 rows)
+
+bcafy4=# select *from dept;
+ dno |  dname  |  dloc  
+-----+---------+--------
+  30 | sales   | mumbai
+  20 | account | pune
+(2 rows)
+
+bcafy4=# 
+-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3)....
+
+
+bcafy4=# \d dept
+            Table "public.dept"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(30) | 
+ dloc   | character varying(30) | 
+Indexes:
+    "dept_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "emp1" CONSTRAINT "emp1_dno_fkey" FOREIGN KEY (dno) REFERENCES dept(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(50) | 
+ salary | double precision      | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+
+bcafy4=# insert into values(30.'sales');
+ERROR:  syntax error at or near "30."
+LINE 1: insert into values(30.'sales');
+                           ^
+bcafy4=# insert into values(30,'sales');
+ERROR:  syntax error at or near "30"
+LINE 1: insert into values(30,'sales');
+                           ^
+bcafy4=# insert into dept values(30,'sales');
+ERROR:  duplicate key value violates unique constraint "dept_pkey"
+bcafy4=# select * from dept;
+ dno |  dname  | dloc 
+-----+---------+------
+  30 | sales   | 
+  20 | account | 
+(2 rows)
+
+bcafy4=# update dept set dloc='mumbai' where dno=30;
+UPDATE 1
+bcafy4=# update dept set dloc='pune' where dno=20;
+UPDATE 1
+bcafy4=# select *from dept;
+ dno |  dname  |  dloc  
+-----+---------+--------
+  30 | sales   | mumbai
+  20 | account | pune
+(2 rows)
+
+bcafy4=# select * from emp1;
+ eno | ename  | designation |  sal  | dno 
+-----+--------+-------------+-------+-----
+  10 | vishal | professor   | 70000 |  20
+(1 row)
+
+bcafy4=# insert into emp1 values(20,'aditi','manager',80000,20);
+INSERT 0 1
+bcafy4=# insert into emp1 values(40,'aditiya','manager',90000,30);
+INSERT 0 1
+bcafy4=# insert into emp1 values(50,'kushal','clerk',10000,30);
+INSERT 0 1
+bcafy4=# insert into emp1 values(60,'rahul','assistant manager',40000,30);
+INSERT 0 1
+bcafy4=# update emp set sal=sal+(sal*0.15) where designation='manager';
+ERROR:  column "sal" does not exist
+LINE 1: update emp set sal=sal+(sal*0.15) where designation='manager...
+                           ^
+bcafy4=# update emp1 set sal=sal+(sal*0.15) where designation='manager';
+UPDATE 2
+bcafy4=# delete from emp1 where dno=30;
+DELETE 3
+bcafy4=# delete from emp1 where designation='clerk';
+DELETE 0
+bcafy4=# update dept set dloc='pune' where dno=20;
+UPDATE 1
+bcafy4=# select *from emp1;
+ eno | ename  | designation |  sal  | dno 
+-----+--------+-------------+-------+-----
+  10 | vishal | professor   | 70000 |  20
+  20 | aditi  | manager     | 92000 |  20
+(2 rows)
+
+bcafy4=# select *from dept;
+ dno |  dname  |  dloc  
+-----+---------+--------
+  30 | sales   | mumbai
+  20 | account | pune
+(2 rows)
+
+bcafy4=# \q
+bash-4.1$ 
+          psql -h 192.168.5.200
+psql (8.4.18, server 8.4.20)
+Type "help" for help.
+
+bcafy4=# create table client(client_no varchar(30) primary key,name varchar(30),address varchar(30));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "client_pkey" for table "client"
+CREATE TABLE
+bcafy4=# \d client
+             Table "public.client"
+  Column   |         Type          | Modifiers 
+-----------+-----------------------+-----------
+ client_no | character varying(30) | not null
+ name      | character varying(30) | 
+ address   | character varying(30) | 
+Indexes:
+    "client_pkey" PRIMARY KEY, btree (client_no)
+
+bcafy4=# create table sales_order(s_order_no int primary key,s_order_date date,client_no int references client(client_no),on delete cascade on update cascade);
+ERROR:  syntax error at or near "on"
+LINE 1: ...e date,client_no int references client(client_no),on delete ...
+                                                             ^
+bcafy4=# create table sales_order(s_order_no int primary key,s_order_date date,client_no int references client(client_no) on delete cascade on update cascade);
+ERROR:  relation "sales_order" already exists
+bcafy4=# \d sales_order
+       Table "public.sales_order"
+   Column    |     Type      | Modifiers 
+-------------+---------------+-----------
+ order_no    | character(10) | not null
+ order_date  | date          | 
+ salesman_no | integer       | 
+Indexes:
+    "sales_order_pkey" PRIMARY KEY, btree (order_no)
+
+sssss
+bcafy4=# create table sales_order(s_order_no int primary key,s_order_date date,client_no varchar(30) references client(client_no) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "sales_order_pkey" for table "sales_order"
+CREATE TABLE
+bcafy4=# \d sales_order
+            Table "public.sales_order"
+    Column    |         Type          | Modifiers 
+--------------+-----------------------+-----------
+ s_order_no   | integer               | not null
+ s_order_date | date                  | 
+ client_no    | character varying(30) | 
+Indexes:
+    "sales_order_pkey" PRIMARY KEY, btree (s_order_no)
+Foreign-key constraints:
+    "sales_order_client_no_fkey" FOREIGN KEY (client_no) REFERENCES client(client_no) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# insert into client values('C004','vishal','mumbai');
+INSERT 0 1
+bcafy4=# insert into client values('C005','joshi','pune');
+INSERT 0 1
+bcafy4=# insert into sales_order values('10','2009-10-05','C004');
+INSERT 0 1
+bcafy4=# insert into sales_order values('20','2007-08-20','C004');
+INSERT 0 1
+bcafy4=# insert into sales_order values('30','2005-05-15','C004');
+INSERT 0 1
+bcafy4=# insert into sales_order values('40','2009-12-3','C005');
+INSERT 0 1
+bcafy4=# insert into sales_order values('50','2008-02-7','C005');
+INSERT 0 1
+bcafy4=# insert into sales_order values('60','2008-02-02','C005');
+INSERT 0 1
+bcafy4=# update sales_order set s_order_date='2008-04-12' where client_no='C004';
+UPDATE 3
+bcafy4=# delete from sales_order where s_order_date<'2008-02-10';
+DELETE 2
+bcafy4=# delete from client where name='joshi';
+DELETE 1
+bcafy4=# \d sales_order
+            Table "public.sales_order"
+    Column    |         Type          | Modifiers 
+--------------+-----------------------+-----------
+ s_order_no   | integer               | not null
+ s_order_date | date                  | 
+ client_no    | character varying(30) | 
+Indexes:
+    "sales_order_pkey" PRIMARY KEY, btree (s_order_no)
+Foreign-key constraints:
+    "sales_order_client_no_fkey" FOREIGN KEY (client_no) REFERENCES client(client_no) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# select * from sales_order;
+ s_order_no | s_order_date | client_no 
+------------+--------------+-----------
+         10 | 2008-04-12   | C004
+         20 | 2008-04-12   | C004
+         30 | 2008-04-12   | C004
+(3 rows)
+
+bcafy4=# select *from client;
+ client_no |  name  | address 
+-----------+--------+---------
+ C004      | vishal | mumbai
+(1 row)
+
+bcafy4=# 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------

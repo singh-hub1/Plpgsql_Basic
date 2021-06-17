@@ -1,0 +1,66 @@
+bcafy2=# create table player(player_id int primary key,name varchar(20),birth_date date ,birth_place varchar(50));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "player_pkey" for table "player"
+CREATE TABLE
+bcafy2=# /d
+bcafy2-# /d player
+bcafy2-# \d
+        List of relations
+ Schema |  Name  | Type  | Owner  
+--------+--------+-------+--------
+ public | player | table | bcafy2
+(1 row)
+
+bcafy2-# \d player
+              Table "public.player"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ player_id   | integer               | not null
+ name        | character varying(20) | 
+ birth_date  | date                  | 
+ birth_place | character varying(50) | 
+Indexes:
+    "player_pkey" PRIMARY KEY, btree (player_id)
+
+bcafy2=# create table student(roll_no int,class varchar(20),weight numeric(6,2),height numeric(6,2),primary key(roll_no,class));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "student_pkey" for table "student"
+CREATE TABLE
+bcafy2=# \d student
+           Table "public.student"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ roll_no | integer               | not null
+ class   | character varying(20) | not null
+ weight  | numeric(6,2)          | 
+ height  | numeric(6,2)          | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (roll_no, class)
+
+bcafy2=# create table project(project_id int primary key,project_name varchar(20),project_description text,status boolean);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "project_pkey" for table "project"
+CREATE TABLE
+bcafy2=# \d project
+                 Table "public.project"
+       Column        |         Type          | Modifiers 
+---------------------+-----------------------+-----------
+ project_id          | integer               | not null
+ project_name        | character varying(20) | 
+ project_description | text                  | 
+ status              | boolean               | 
+Indexes:
+    "project_pkey" PRIMARY KEY, btree (project_id)
+
+bcafy2=# create table donor(donor_no int primary key,donor_name varchar(50),blood_group char(6),last_date date);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "donor_pkey" for table "donor"
+CREATE TABLE
+bcafy2=# \d donor
+              Table "public.donor"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ donor_no    | integer               | not null
+ donor_name  | character varying(50) | 
+ blood_group | character(6)          | 
+ last_date   | date                  | 
+Indexes:
+    "donor_pkey" PRIMARY KEY, btree (donor_no)
+
+

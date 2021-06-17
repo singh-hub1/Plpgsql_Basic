@@ -1,0 +1,229 @@
+bcafy4=# create table department1(dept_no int primary key,dept_name varchar(50),location varchar(50));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "department1_pkey" for table "department1"
+CREATE TABLE
+bcafy4=# \d department1
+          Table "public.department1"
+  Column   |         Type          | Modifiers 
+-----------+-----------------------+-----------
+ dept_no   | integer               | not null
+ dept_name | character varying(50) | 
+ location  | character varying(50) | 
+Indexes:
+    "department1_pkey" PRIMARY KEY, btree (dept_no)
+
+bcafy4=# create table employee2(emp_no int primary key,emp_name varchar(50),address text,city varchar(50),birth_date date,designation varchar(50) check(designation in('manager','worker','clerk')),salary float check(salary>0),dept_no int references department1(dept_no) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "employee2_pkey" for table "employee2"
+CREATE TABLE
+bcafy4=# \d employee2
+            Table "public.employee2"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ emp_no      | integer               | not null
+ emp_name    | character varying(50) | 
+ address     | text                  | 
+ city        | character varying(50) | 
+ birth_date  | date                  | 
+ designation | character varying(50) | 
+ salary      | double precision      | 
+ dept_no     | integer               | 
+Indexes:
+    "employee2_pkey" PRIMARY KEY, btree (emp_no)
+Check constraints:
+    "employee2_designation_check" CHECK (designation::text = ANY (ARRAY['manager
+'::character varying, 'worker'::character varying, 'clerk'::character varying]::
+text[]))
+    "employee2_salary_check" CHECK (salary > 0::double precision)
+Foreign-key constraints:
+    "employee2_dept_no_fkey" FOREIGN KEY (dept_no) REFERENCES department1(dept_n
+o) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# create table project1(project_no int primary key,project_name varchar(50),status varchar(20),dept_no int references department1(dept_no) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "project1_pkey" for table "project1"
+CREATE TABLE
+bcafy4=# \d project1
+             Table "public.project1"
+    Column    |         Type          | Modifiers 
+--------------+-----------------------+-----------
+ project_no   | integer               | not null
+ project_name | character varying(50) | 
+ status       | character varying(20) | 
+ dept_no      | integer               | 
+Indexes:
+    "project1_pkey" PRIMARY KEY, btree (project_no)
+Foreign-key constraints:
+    "project1_dept_no_fkey" FOREIGN KEY (dept_no) REFERENCES department1(dept_no) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# create table emppro(emp_no int,project_no int,primary key(emp_no,project_no));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emppro_pkey" for table "emppro"
+CREATE TABLE
+bcafy4=# \d emppro
+      Table "public.emppro"
+   Column   |  Type   | Modifiers 
+------------+---------+-----------
+ emp_no     | integer | not null
+ project_no | integer | not null
+Indexes:
+    "emppro_pkey" PRIMARY KEY, btree (emp_no, project_no)
+bcafy4=# insert into emppro values(1,50);
+INSERT 0 1
+bcafy4=# insert into emppro values(2,50);
+INSERT 0 1
+bcafy4=# insert into emppro values(3,50);
+INSERT 0 1
+bcafy4=# insert into emppro values(4,50);
+INSERT 0 1
+bcafy4=# insert into emppro values(5,50);
+INSERT 0 1
+bcafy4=# insert into emppro values(6,51);
+INSERT 0 1
+bcafy4=# insert into emppro values(7,51);
+INSERT 0 1
+bcafy4=# insert into emppro values(8,51);
+INSERT 0 1
+bcafy4=# insert into emppro values(9,51);
+INSERT 0 1
+bcafy4=# insert into emppro values(10,51);
+INSERT 0 1
+bcafy4=# insert into emppro values(11,52);
+INSERT 0 1
+bcafy4=# insert into emppro values(12,52);
+INSERT 0 1
+bcafy4=# insert into emppro values(13,52);
+INSERT 0 1
+bcafy4=# select * from emppro;
+ emp_no | project_no 
+--------+------------
+      1 |         50
+      2 |         50
+      3 |         50
+      4 |         50
+      5 |         50
+      6 |         51
+      7 |         51
+      8 |         51
+      9 |         51
+     10 |         51
+     11 |         52
+     12 |         52
+     13 |         52
+(13 rows)
+
+
+bcafy4=# insert into department1 values(10,'maths','pune');
+INSERT 0 1
+bcafy4=# insert into department1 values(20,'english','pune');
+INSERT 0 1
+bcafy4=# insert into department1 values(30,'cs','pune');
+INSERT 0 1
+
+bcafy4=# select * from department1
+bcafy4-# ;
+ dept_no | dept_name | location 
+---------+-----------+----------
+      10 | maths     | pune
+      20 | english   | pune
+      30 | cs        | pune
+(3 rows)
+bcafy4=# insert into employee2 values(1,'atharv','ambegaon','pune','2001-01-28','manager',1000000,10);
+INSERT 0 1
+bcafy4=# insert into employee2 values(2,'shreyas','katraj','pune','2004-02-21','worker',600000,10);
+INSERT 0 1
+bcafy4=# insert into employee2 values(3,'sid','katraj','pune','2000-02-17','worker',500000,10);
+INSERT 0 1
+bcafy4=# insert into employee2 values(4,'vedang','katraj','pune','2002-08-16','worker',50000,10);
+INSERT 0 1
+bcafy4=# insert into employee2 values(5,'pruthvi','katraj','pune','1999-08-25','clerk',50000,10);
+INSERT 0 1
+bcafy4=# insert into employee2 values(6,'ishann','bharti vidyapheet','pune','1998-08-25','manager',500000,20);
+INSERT 0 1
+bcafy4=# insert into employee2 values(7,'pratik','bharti vidyapheet','pune','2001-11-30','worker',50000,20);
+INSERT 0 1
+bcafy4=# insert into employee2 values(8,'candy','katraj','pune','2001-11-30','worker',60000,20);
+INSERT 0 1
+bcafy4=# insert into employee2 values(9,'candice','katraj','pune','2001-11-01','worker',50000,20);
+INSERT 0 1
+bcafy4=# insert into employee2 values(10,'candller','katraj','pune','2002-12-20','clerk',5000,20);
+INSERT 0 1
+bcafy4=# insert into employee2 values(11,'amar','katraj','pune','2002-12-20','manager',50000,30);
+INSERT 0 1
+bcafy4=# insert into employee2 values(12,'shelke','nahre','pune','2000-06-26','worker',5000,30);
+INSERT 0 1
+bcafy4=# insert into employee2 values(13,'sanket','nahre','pune','2000-09-24','worker',6000,30);
+INSERT 0 1
+
+bcafy4=# select * from employee2;
+ emp_no | emp_name |      address      | city | birth_date | designation | salary  | dept_no 
+--------+----------+-------------------+------+------------+-------------+---------+---------
+      1 | atharv   | ambegaon          | pune | 2001-01-28 | manager     | 1000000 |      10
+      2 | shreyas  | katraj            | pune | 2004-02-21 | worker      |  600000 |      10
+      3 | sid      | katraj            | pune | 2000-02-17 | worker      |  500000 |      10
+      4 | vedang   | katraj            | pune | 2002-08-16 | worker      |   50000 |      10
+      5 | pruthvi  | katraj            | pune | 1999-08-25 | clerk       |   50000 |      10
+      6 | ishann   | bharti vidyapheet | pune | 1998-08-25 | manager     |  500000 |      20
+      7 | pratik   | bharti vidyapheet | pune | 2001-11-30 | worker      |   50000 |      20
+      8 | candy    | katraj            | pune | 2001-11-30 | worker      |   60000 |      20
+      9 | candice  | katraj            | pune | 2001-11-01 | worker      |   50000 |      20
+     10 | candller | katraj            | pune | 2002-12-20 | clerk       |    5000 |      20
+     11 | amar     | katraj            | pune | 2002-12-20 | manager     |   50000 |      30
+     12 | shelke   | nahre             | pune | 2000-06-26 | worker      |    5000 |      30
+     13 | sanket   | nahre             | pune | 2000-09-24 | worker      |    6000 |      30
+(13 rows)
+
+bcafy4=# insert into project1 values(50,'inventory','ongoing',10);
+INSERT 0 1
+bcafy4=# insert into project1 values(51,'swachata','ongoing',20);
+INSERT 0 1
+bcafy4=# insert into project1 values(52,'R18','completed',30);
+INSERT 0 1
+bcafy4=# select * from project1;
+ project_no | project_name |  status   | dept_no 
+------------+--------------+-----------+---------
+         50 | inventory    | ongoing   |      10
+         51 | swachata     | ongoing   |      20
+         52 | R18          | completed |      30
+(3 rows)
+bcafy4=# select salary from employee2 where designation='manager';
+ salary  
+---------
+ 1000000
+  500000
+   50000
+(3 rows)
+
+A))   bcafy4=# update employee2 set salary = salary+(salary*0.1) where designation='manager';
+UPDATE 3
+bcafy4=# select salary from employee2 where designation='manager';
+ salary  
+---------
+ 1100000
+  550000
+   55000
+(3 rows)
+B)) bcafy4=# select * from project1;
+ project_no | project_name |  status   | dept_no 
+------------+--------------+-----------+---------
+         50 | inventory    | ongoing   |      10
+         51 | swachata     | ongoing   |      20
+         52 | R18          | completed |      30
+(3 rows)
+
+C)) bcafy4=# select max(salary),dept_no from employee2 group by dept_no;
+   max   | dept_no 
+---------+---------
+   55000 |      30
+  550000 |      20
+ 1100000 |      10
+(3 rows)
+------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------
+D))  bcafy4=# select * from employee2 where dept_no=30;
+ emp_no | emp_name | address | city | birth_date | designation | salary | dept_no 
+--------+----------+---------+------+------------+-------------+--------+---------
+     12 | shelke   | nahre   | pune | 2000-06-26 | worker      |   5000 |      30
+     13 | sanket   | nahre   | pune | 2000-09-24 | worker      |   6000 |      30
+     11 | amar     | katraj  | pune | 2002-12-20 | manager     |  55000 |      30
+(3 rows)
+
+

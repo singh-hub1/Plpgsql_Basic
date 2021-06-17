@@ -1,0 +1,43 @@
+1.
+bcafy2=# create table machine(machine_id int primary key,machine_name varchar(20) not null check(machine_name=upper(machine_name)),machine_type varchar(10) check (machine_type in('drilling','milling','lathe','turning','grinding')),machine_price float check(machine_price>0), machine_cost float check(machine_cost<machine_price));
+
+bcafy2=# \d machine
+              Table "public.machine"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ machine_id    | integer               | not null
+ machine_name  | character varying(20) | not null
+ machine_type  | character varying(10) | 
+ machine_price | double precision      | 
+ machine_cost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (machine_id)
+Check constraints:
+    "machine_check" CHECK (machine_cost < machine_price)
+    "machine_machine_name_check" CHECK (machine_name::text = upper(machine_name::text))
+    "machine_machine_price_check" CHECK (machine_price > 0::double precision)
+    "machine_machine_type_check" CHECK (machine_type::text = ANY (ARRAY['drilling'::character varying, 'milling'::character varying, 'lathe'::character varying, 'turning'::character varying, 'grinding'::character varying]::text[]))
+
+2.
+bcafy2=# create table employee(employee_id varchar(10) primary key,employee_name varchar(50) not null check(employee_name=upper(employee_name)),employee_desg varchar(10) check(employee_desg in('manager','staff','worker')),employee_sal float check(employee_sal > 0),employee_uid varchar(15)unique,check(employee_uid!=employee_id));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "employee_pkey" for table "employee"
+NOTICE:  CREATE TABLE / UNIQUE will create implicit index "employee_employee_uid_key" for table "employee"
+CREATE TABLE
+bcafy2=# \d employee
+              Table "public.employee"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ employee_id   | character varying(10) | not null
+ employee_name | character varying(50) | not null
+ employee_desg | character varying(10) | 
+ employee_sal  | double precision      | 
+ employee_uid  | character varying(15) | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (employee_id)
+    "employee_employee_uid_key" UNIQUE, btree (employee_uid)
+Check constraints:
+    "employee_check" CHECK (employee_uid::text <> employee_id::text)
+    "employee_employee_desg_check" CHECK (employee_desg::text = ANY (ARRAY['manager'::character varying, 'staff'::character varying, 'worker'::character varying]::text[]))
+    "employee_employee_name_check" CHECK (employee_name::text = upper(employee_name::text))
+    "employee_employee_sal_check" CHECK (employee_sal > 0::double precision)
+

@@ -1,0 +1,62 @@
+2)create table Employee(Employee_id int primary key,Employee_name varchar(50) not null check(Employee_name=upper(Employee_name)),Employee_desg varchar(10) check(Employee_desg in('Manager','staff','worker')),Employee_sal float check(Employee_sal>0),Employee_uid int unique,check(Employee_uid!=Employee_id));
+
+
+\d employee
+              Table "public.employee"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ employee_id   | integer               | not null
+ employee_name | character varying(50) | not null
+ employee_desg | character varying(10) | 
+ employee_sal  | double precision      | 
+ employee_uid  | integer               | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (employee_id)
+    "employee_employee_uid_key" UNIQUE, btree (employee_uid)
+Check constraints:
+    "employee_check" CHECK (employee_uid <> employee_id)
+    "employee_employee_desg_check" CHECK (employee_desg::text = ANY (ARRAY['Manager'::character varying, 'staff'::character varying, 'worker'::character varying]::text[]))
+    "employee_employee_name_check" CHECK (employee_name::text = upper(employee_name::text))
+    "employee_employee_sal_check" CHECK (employee_sal > 0::double precision)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1)create table Machine(Machine_id int primary key,Machine_name varchar(50) not null check(Machine_name=upper(Machine_name)),Machine_type varchar(10) check( Machine_type in('drilling','milling','lathe','turning','grinding')),Machine_price float check(Machine_price>0),Machine_cost float check(Machine_cost<Machine_price));
+
+\d machine
+              Table "public.machine"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ machine_id    | integer               | not null
+ machine_name  | character varying(50) | not null
+ machine_type  | character varying(10) | 
+ machine_price | double precision      | 
+ machine_cost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (machine_id)
+Check constraints:
+    "machine_check" CHECK (machine_cost < machine_price)
+    "machine_machine_name_check" CHECK (machine_name::text = upper(machine_name::text))
+    "machine_machine_price_check" CHECK (machine_price > 0::double precision)
+    "machine_machine_type_check" CHECK (machine_type::text = ANY (ARRAY['drilling'::character varying, 'milling'::character varying, 'lathe'::character varying, 'turning'::character varying, 'grinding'::character varying]::text[]))
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3)create table student1(stud_id int primary key,stud_name varchar(50) not null check(stud_name=upper(stud_name)),stud_class varchar(10) check(stud_class in('FY','SY','TY')),stud_Marks float check(stud_marks>0),stud_uid int unique,check(stud_uid!=stud_id));
+
+\d student1
+            Table "public.student1"
+   Column   |         Type          | Modifiers 
+------------+-----------------------+-----------
+ stud_id    | integer               | not null
+ stud_name  | character varying(50) | not null
+ stud_class | character varying(10) | 
+ stud_marks | double precision      | 
+ stud_uid   | integer               | 
+Indexes:
+    "student1_pkey" PRIMARY KEY, btree (stud_id)
+    "student1_stud_uid_key" UNIQUE, btree (stud_uid)
+Check constraints:
+    "student1_check" CHECK (stud_uid <> stud_id)
+    "student1_stud_class_check" CHECK (stud_class::text = ANY (ARRAY['FY'::character varying, 'SY'::character varying, 'TY'::character varying]::text[]))
+    "student1_stud_marks_check" CHECK (stud_marks > 0::double precision)
+    "student1_stud_name_check" CHECK (stud_name::text = upper(stud_name::text))
+
+
+

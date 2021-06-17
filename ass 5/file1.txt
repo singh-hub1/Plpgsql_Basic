@@ -1,0 +1,149 @@
+WARNING: psql version 9.2, server version 8.4.
+         Some psql features might not work.
+Type "help" for help.
+
+bcafy4=# \d
+No relations found.
+bcafy4=# create table emp(eno integer primary key,ename varchar(50),salary float);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emp_pkey" for table "emp"
+CREATE TABLE
+bcafy4=# \d emp
+             Table "public.emp"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(50) | 
+ salary | double precision      | 
+Indexes:
+    "emp_pkey" PRIMARY KEY, btree (eno)
+        
+bcafy4=# create table sales_order(order_no char(10) primary key,order_date date,salesman_no integer);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "sales_order_pkey" for table "sales_order"
+CREATE TABLE
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table client_master(client_no integer constraint p_client primary key name varchar(50),addr text,bal_due integer);
+ERROR:  syntax error at or near "name"
+LINE 1: ...client_no integer constraint p_client primary key name varch...
+                                                             ^
+bcafy4=# create table client_master(client_no integer constraint p_client primary key, name varchar(50),addr text,bal_due integer);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "p_client" for table "client_master"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | sales_order   | table | bcafy4
+(3 rows)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table inventory(inv_no integer primary key,in_stock boolean);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "inventory_pkey" for table "inventory"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | sales_order   | table | bcafy4
+(4 rows)
+
+bcafy4=# create table sales_order1(order_no char(10),product_no char(10),qty_order integer,product_rate numeric(8,2),primary key(order_no,product_no));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "sales_order1_pkey" for table "sales_order1"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+(5 rows)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table player(player_id int primary key,name varchar(50),birth_date date,birth_place varchar(100));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "player_pkey" for table "player"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+(6 rows)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table(roll_no int,class varchar(20),weight numeric(6,2),height(6,2),primary key(roll_no,class));
+ERROR:  syntax error at or near "("
+LINE 1: create table(roll_no int,class varchar(20),weight numeric(6,...
+                    ^
+bcafy4=# create table(roll_no int,class varchar(20),weight numeric(6,2),height(6,2),primary key(roll_no,class));
+ERROR:  syntax error at or near "("
+LINE 1: create table(roll_no int,class varchar(20),weight numeric(6,...
+                    ^
+bcafy4=# create table student(roll_no int,class varchar(20),weight numeric(6,2),height(6,2),primary key(roll_no,class));
+ERROR:  syntax error at or near "("
+LINE 1: ...o int,class varchar(20),weight numeric(6,2),height(6,2),prim...
+                                                             ^
+bcafy4=# create table student(roll_no int,class varchar(20),weight numeric(6,2),height numeric(6,2),primary key(roll_no,class));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "student_pkey" for table "student"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(7 rows)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table project(project_id int primary key,project_name varchar(20),project_description text,status boolean);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "project_pkey" for table "project"
+CREATE TABLE
+bc
+create table Employee(Employee_id int primary key,Employee_name varchar(50) not null check(Employee_name=upper(Employee_name)),Employee_desg varchar(10) check(Employee_desg in('Manager','staff','worker')),Employee_sal float check(Employee_sal>0),Employee_uid text unique,check(Employee_uid!=Employee_id));
+
+
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(8 rows)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+bcafy4=# create table donor (donor_no int primary key,donor_name varchar(50),blood_group char(6),last_date date);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "donor_pkey" for table "donor"
+CREATE TABLE
+bcafy4=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | client_master | table | bcafy4
+ public | donor         | table | bcafy4
+ public | emp           | table | bcafy4
+ public | inventory     | table | bcafy4
+ public | player        | table | bcafy4
+ public | project       | table | bcafy4
+ public | sales_order   | table | bcafy4
+ public | sales_order1  | table | bcafy4
+ public | student       | table | bcafy4
+(9 rows)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------

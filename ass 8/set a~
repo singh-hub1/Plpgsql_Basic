@@ -1,0 +1,45 @@
+1.bcafy2=# insert into sales_order values('A2100',now(),'40014');
+ERROR:  duplicate key value violates unique constraint "sales_order_pkey"
+bcafy2=# select * from sales_order;
+  order_no  | order_date | salesman_no 
+------------+------------+-------------
+ A2100      | 2020-01-24 |       40014
+(1 row)
+
+2.bcafy2=# insert into client_master values('2100','KUSHAL','natraj_apt',40014);
+INSERT 0 1
+bcafy2=# select * from client_master;
+ client_no |  name  |    addr    | bal_due 
+-----------+--------+------------+---------
+      2100 | KUSHAL | natraj_apt |   40014
+(1 row)
+
+5.bcafy2=# insert into student values(104,'kushal',03/04/2001,238913,'pune');
+INSERT 0 1
+bcafy2=# \d student
+              Table "public.student"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ student_no    | integer               | not null
+ sname         | character varying(30) | 
+ date_of_birth | integer               | 
+ phone         | integer               | 
+ address       | text                  | not null
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_no)
+
+bcafy2=# select * from student;
+ student_no | sname  | date_of_birth | phone  | address 
+------------+--------+---------------+--------+---------
+        104 | kushal |             0 | 238913 | pune
+(1 row)
+
+bcafy2=# update student set sname='sonali',address='jayraj_apt' where student_no=104;
+UPDATE 1
+bcafy2=# select * from student;
+ student_no | sname  | date_of_birth | phone  |  address   
+------------+--------+---------------+--------+------------
+        104 | sonali |             0 | 238913 | jayraj_apt
+(1 row)
+
+

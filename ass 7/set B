@@ -1,0 +1,226 @@
+bcafy2=# \d
+            List of relations
+ Schema |     Name      | Type  | Owner  
+--------+---------------+-------+--------
+ public | actor         | table | bcafy2
+ public | books         | table | bcafy2
+ public | car           | table | bcafy2
+ public | client_master | table | bcafy2
+ public | donor         | table | bcafy2
+ public | emp           | table | bcafy2
+ public | employee      | table | bcafy2
+ public | hospital      | table | bcafy2
+ public | inventory     | table | bcafy2
+ public | machine       | table | bcafy2
+ public | movie         | table | bcafy2
+ public | player        | table | bcafy2
+ public | project       | table | bcafy2
+ public | property      | table | bcafy2
+ public | sales_order   | table | bcafy2
+ public | sales_order1  | table | bcafy2
+ public | student       | table | bcafy2
+ public | student_b     | table | bcafy2
+(18 rows)
+
+bcafy2=# drop table employee;
+DROP TABLE
+bcafy2=# create table employee(cno int primary key,ename varchar(30),salary float);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "employee_pkey" for table "employee"
+CREATE TABLE
+bcafy2=# \d employee
+          Table "public.employee"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ cno    | integer               | not null
+ ename  | character varying(30) | 
+ salary | double precision      | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (cno)
+
+***********************************************************************************************************************************************
+
+bcafy2=# alter table employee add column designation text;
+ALTER TABLE
+bcafy2=# \d employee
+             Table "public.employee"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ cno         | integer               | not null
+ ename       | character varying(30) | 
+ salary      | double precision      | 
+ designation | text                  | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (cno)
+
+**********************************************************************************************************************************************
+
+bcafy2=# alter table employee add check(designation in('manager','senior_manager','branch_manager'));
+ALTER TABLE
+bcafy2=# \d employee
+             Table "public.employee"
+   Column    |         Type          | Modifiers 
+-------------+-----------------------+-----------
+ cno         | integer               | not null
+ ename       | character varying(30) | 
+ salary      | double precision      | 
+ designation | text                  | 
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (cno)
+Check constraints:
+    "employee_designation_check" CHECK (designation = ANY (ARRAY['manager'::text, 'senior_manager'::text, 'branch_manager'::text]))
+
+*********************************************************************************************************************************************
+
+bcafy2=# \d student;
+           Table "public.student"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ roll_no | integer               | not null
+ class   | character varying(20) | not null
+ weight  | numeric(6,2)          | 
+ height  | numeric(6,2)          | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (roll_no, class)
+
+**************************************************************************************************************************************************
+
+bcafy2=# drop table student;
+DROP TABLE
+bcafy2=# create table student(student_no int primary key,sname varchar(30),date_of_birth int);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "student_pkey" for table "student"
+CREATE TABLE
+bcafy2=# \d student
+              Table "public.student"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ student_no    | integer               | not null
+ sname         | character varying(30) | 
+ date_of_birth | integer               | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_no)
+
+*****************************************************************************************************************************************************
+
+bcafy2=# alter table student add  column address text not null;
+ALTER TABLE
+bcafy2=# \d student
+              Table "public.student"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ student_no    | integer               | not null
+ sname         | character varying(30) | 
+ date_of_birth | integer               | 
+ phone         | integer               | 
+ address       | text                  | not null
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_no)
+
+******************************************************************************************************************************************************
+
+bcafy2=# alter table student add  column phone int;
+ALTER TABLE
+bcafy2=# \d student
+              Table "public.student"
+    Column     |         Type          | Modifiers 
+---------------+-----------------------+-----------
+ student_no    | integer               | not null
+ sname         | character varying(30) | 
+ date_of_birth | integer               | 
+ phone         | integer               | 
+Indexes:
+    "student_pkey" PRIMARY KEY, btree (student_no)
+
+*****************************************************************************************************************************************************
+bcafy2=# \d project
+                 Table "public.project"
+       Column        |         Type          | Modifiers 
+---------------------+-----------------------+-----------
+ project_id          | integer               | not null
+ project_name        | character varying(20) | 
+ project_description | text                  | 
+ status              | boolean               | 
+Indexes:
+    "project_pkey" PRIMARY KEY, btree (project_id)
+
+bcafy2=# alter table project add check(project_name like '%R');
+ALTER TABLE
+bcafy2=# \d project
+                 Table "public.project"
+       Column        |         Type          | Modifiers 
+---------------------+-----------------------+-----------
+ project_id          | integer               | not null
+ project_name        | character varying(20) | 
+ project_description | text                  | 
+ status              | boolean               | 
+Indexes:
+    "project_pkey" PRIMARY KEY, btree (project_id)
+Check constraints:
+    "project_project_name_check" CHECK (project_name::text ~~ '%R'::text)
+
+bcafy2=# \d hospital
+          Table "public.hospital"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ h_no   | integer               | not null
+ h_name | character varying(20) | 
+ h_city | integer               | 
+Indexes:
+    "hospital_pkey" PRIMARY KEY, btree (h_no)
+
+bcafy2=# alter table hospital  add column hbudget int;
+ALTER TABLE
+bcafy2=# \d hospital
+           Table "public.hospital"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ h_no    | integer               | not null
+ h_name  | character varying(20) | 
+ h_city  | integer               | 
+ hbudget | integer               | 
+Indexes:
+    "hospital_pkey" PRIMARY KEY, btree (h_no)
+
+bcafy2=# alter table hospital  add check(hbudget > 500000);
+ALTER TABLE
+bcafy2=# \d hospital
+           Table "public.hospital"
+ Column  |         Type          | Modifiers 
+---------+-----------------------+-----------
+ h_no    | integer               | not null
+ h_name  | character varying(20) | 
+ h_city  | integer               | 
+ hbudget | integer               | 
+Indexes:
+    "hospital_pkey" PRIMARY KEY, btree (h_no)
+Check constraints:
+    "hospital_hbudget_check" CHECK (hbudget > 500000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

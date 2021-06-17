@@ -1,0 +1,281 @@
+
+
+bcafy16=# create table Department(dno int primary key,dname varchar(20),dloc text);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "department_pkey" for table "department"
+CREATE TABLE
+bcafy16=# create table Employee1(eno int primary key,ename varchar(20),addr text,sal float check (sal>0),desg text check(desg in ('manager','clerk','manager')),dno int references Department(dno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "employee1_pkey" for table "employee1"
+CREATE TABLE
+bcafy16=# \d department
+         Table "public.department"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(20) | 
+ dloc   | text                  | 
+Indexes:
+    "department_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "employee1" CONSTRAINT "employee1_dno_fkey" FOREIGN KEY (dno) REFERENCES department(dno) ON UPDATE CASCADE ON DELETE CASCADE
+********************************************************************************************
+
+bcafy16=# \d Employee1
+          Table "public.employee1"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(20) | 
+ addr   | text                  | 
+ sal    | double precision      | 
+ desg   | text                  | 
+ dno    | integer               | 
+Indexes:
+    "employee1_pkey" PRIMARY KEY, btree (eno)
+Check constraints:
+    "employee1_desg_check" CHECK (desg = ANY (ARRAY['manager'::text, 'clerk'::text, 'manager'::text]))
+    "employee1_sal_check" CHECK (sal > 0::double precision)
+Foreign-key constraints:
+    "employee1_dno_fkey" FOREIGN KEY (dno) REFERENCES department(dno) ON UPDATE CASCADE ON DELETE CASCADE
+ 
+************************************************************************************************
+
+bcafy16=# drop table project1;
+DROP TABLE
+
+bcafy16=# create table Project1(pno int primary key,pname varchar);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "project1_pkey" for table "project1"
+CREATE TABLE
+
+bcafy16=# create table Emp_Pro(eno int primary key references Employee(eno) on delete cascade on update cascade,pno int references Project1(pno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emp_pro_pkey" for table "emp_pro"
+ERROR:  column "eno" referenced in foreign key constraint does not exist
+bcafy16=# \d Employee1
+          Table "public.employee1"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(20) | 
+ addr   | text                  | 
+ sal    | double precision      | 
+ desg   | text                  | 
+ dno    | integer               | 
+Indexes:
+    "employee1_pkey" PRIMARY KEY, btree (eno)
+Check constraints:
+    "employee1_desg_check" CHECK (desg = ANY (ARRAY['manager'::text, 'clerk'::text, 'manager'::text]))
+    "employee1_sal_check" CHECK (sal > 0::double precision)
+Foreign-key constraints:
+    "employee1_dno_fkey" FOREIGN KEY (dno) REFERENCES department(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy16=# create table Emp_Pro(eno int primary key references Employee1(eno) on delete cascade on update cascade,pno int references Project1(pno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "emp_pro_pkey" for table "emp_pro"
+CREATE TABLE
+bcafy16=# insert into Department values(1,'cs','pune');
+INSERT 0 1
+bcafy16=# insert into Department values(2,'sci','pune');
+INSERT 0 1
+bcafy16=# insert into Department values(3,'electronics','pune');
+INSERT 0 1
+bcafy16=# insert into Department values(4,'maths','mumbai');
+INSERT 0 1
+bcafy16=# insert into Department values(5,'microbio','nashik');
+INSERT 0 1
+bcafy16=# \d Employee1
+          Table "public.employee1"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ eno    | integer               | not null
+ ename  | character varying(20) | 
+ addr   | text                  | 
+ sal    | double precision      | 
+ desg   | text                  | 
+ dno    | integer               | 
+Indexes:
+    "employee1_pkey" PRIMARY KEY, btree (eno)
+Check constraints:
+    "employee1_desg_check" CHECK (desg = ANY (ARRAY['manager'::text, 'clerk'::text, 'manager'::text]))
+    "employee1_sal_check" CHECK (sal > 0::double precision)
+Foreign-key constraints:
+    "employee1_dno_fkey" FOREIGN KEY (dno) REFERENCES department(dno) ON UPDATE CASCADE ON DELETE CASCADE
+Referenced by:
+    TABLE "emp_pro" CONSTRAINT "emp_pro_eno_fkey" FOREIGN KEY (eno) REFERENCES employee1(eno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy16=# insert into Employee1 values(1,'priya','pune',15000,'manager',1);
+INSERT 0 1
+bcafy16=# insert into Employee1 values(2,'priyanka','pune',15000,'manager',1);
+INSERT 0 1
+bcafy16=# insert into Employee1 values(3,'priyanka','pune',15000,'clerk',2);
+INSERT 0 1
+bcafy16=# insert into Employee1 values(4,'priyansh','mumbai',25000,'clerk',3);
+INSERT 0 1
+bcafy16=# insert into Employee1 values(5,'piyush','mumbai',25000,'manager',4);
+INSERT 0 1
+bcafy16=# insert into Project1 values(100,'webdesign');
+INSERT 0 1
+bcafy16=# insert into Project1 values(101,'softwaredesign');
+INSERT 0 1
+bcafy16=# insert into Project1 values(102,'solarcharger');
+INSERT 0 1
+bcafy16=# insert into Project1 values(103,'statisc');
+INSERT 0 1
+bcafy16=# insert into Project1 values(104,'photons');
+INSERT 0 1
+bcafy16=# select * from Project1;
+ pno |     pname      
+-----+----------------
+ 100 | webdesign
+ 101 | softwaredesign
+ 102 | solarcharger
+ 103 | statisc
+ 104 | photons
+(5 rows)
+
+bcafy16=# insert into Emp_pro values(1,100);
+INSERT 0 1
+bcafy16=# insert into Emp_pro values(2,100);
+INSERT 0 1
+bcafy16=# insert into Emp_pro values(3,101);
+INSERT 0 1
+bcafy16=# insert into Emp_pro values(4,102);
+INSERT 0 1
+bcafy16=# insert into Emp_pro values(5,103);
+INSERT 0 1
+
+-----------------------------------------------------------------------------------------------
+ 
+bcafy16=# select * from Emp_pro;
+ eno | pno 
+-----+-----
+   1 | 100
+   2 | 100
+   3 | 101
+   4 | 102
+   5 | 103
+(5 rows)
+
+bcafy16=# \d Emp_pro
+    Table "public.emp_pro"
+ Column |  Type   | Modifiers 
+--------+---------+-----------
+ eno    | integer | not null
+ pno    | integer | 
+Indexes:
+    "emp_pro_pkey" PRIMARY KEY, btree (eno)
+Foreign-key constraints:
+    "emp_pro_eno_fkey" FOREIGN KEY (eno) REFERENCES employee1(eno) ON UPDATE CASCADE ON DELETE CASCADE
+    "emp_pro_pno_fkey" FOREIGN KEY (pno) REFERENCES project1(pno) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy16=# select * from Employee1;
+ eno |  ename   |  addr  |  sal  |  desg   | dno 
+-----+----------+--------+-------+---------+-----
+   1 | priya    | pune   | 15000 | manager |   1
+   2 | priyanka | pune   | 15000 | manager |   1
+   3 | priyanka | pune   | 15000 | clerk   |   2
+   4 | priyansh | mumbai | 25000 | clerk   |   3
+   5 | piyush   | mumbai | 25000 | manager |   4
+(5 rows)
+
+bcafy16=# select * from department;
+ dno |    dname    |  dloc  
+-----+-------------+--------
+   1 | cs          | pune
+   2 | sci         | pune
+   3 | electronics | pune
+   4 | maths       | mumbai
+   5 | microbio    | nashik
+(5 rows)
+
+
+                            ^
+bcafy16=# update Employee1 set sal=sal+(sal*0.1) where desg='manager';
+UPDATE 3
+bcafy16=# select * from Employee1;
+ eno |  ename   |  addr  |  sal  |  desg   | dno 
+-----+----------+--------+-------+---------+-----
+   3 | priyanka | pune   | 15000 | clerk   |   2
+   4 | priyansh | mumbai | 25000 | clerk   |   3
+   1 | priya    | pune   | 16500 | manager |   1
+   2 | priyanka | pune   | 16500 | manager |   1
+   5 | piyush   | mumbai | 27500 | manager |   4
+(5 rows)
+
+bcafy16=# select * from project;
+ project_id | project_name | project_description | status 
+------------+--------------+---------------------+--------
+(0 rows)
+
+bcafy16=# select * from Project1;
+ pno |     pname      
+-----+----------------
+ 100 | webdesign
+ 101 | softwaredesign
+ 102 | solarcharger
+ 103 | statisc
+ 104 | photons
+(5 rows)
+
+
+               ^
+bcafy16=# select ename from Employee1 where eno in(select eno from Emp_pro where pno=(select pno from Project1 where pname='webdesign'));
+  ename   
+----------
+ priya
+ priyanka
+(2 rows)
+
+
+bcafy16=# select * from Employee1 where eno in(select eno from Employee1 where dno=(select dno from department where dname='cs'));
+ eno |  ename   | addr |  sal  |  desg   | dno 
+-----+----------+------+-------+---------+-----
+   1 | priya    | pune | 16500 | manager |   1
+   2 | priyanka | pune | 16500 | manager |   1
+(2 rows)
+
+bcafy16=# select ename,sal from Employee1 order by sal;
+  ename   |  sal  
+----------+-------
+ priyanka | 15000
+ priya    | 16500
+ priyanka | 16500
+ priyansh | 25000
+ piyush   | 27500
+(5 rows)
+
+bcafy16=# delete from department where dno=2;
+DELETE 1
+bcafy16=# \d department
+         Table "public.department"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ dno    | integer               | not null
+ dname  | character varying(20) | 
+ dloc   | text                  | 
+Indexes:
+    "department_pkey" PRIMARY KEY, btree (dno)
+Referenced by:
+    TABLE "employee1" CONSTRAINT "employee1_dno_fkey" FOREIGN KEY (dno) REFERENCES department(dno) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+bcafy16=# select * from department;
+ dno |    dname    |  dloc  
+-----+-------------+--------
+   1 | cs          | pune
+   3 | electronics | pune
+   4 | maths       | mumbai
+   5 | microbio    | nashik
+(4 rows)
+
+bcafy16=# select * from Employee1;
+ eno |  ename   |  addr  |  sal  |  desg   | dno 
+-----+----------+--------+-------+---------+-----
+   4 | priyansh | mumbai | 25000 | clerk   |   3
+   1 | priya    | pune   | 16500 | manager |   1
+   2 | priyanka | pune   | 16500 | manager |   1
+   5 | piyush   | mumbai | 27500 | manager |   4
+(4 rows)
+
+
+
+b)
+
+

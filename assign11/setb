@@ -1,0 +1,37 @@
+CREATE TABLE / PRIMARY KEY will create implicit index "route_pkey" for table "route"
+CREATE TABLE
+bcafy4=# drop table route;
+DROP TABLE
+bcafy4=# create table route(route_no int primary key,source varchar(30),destination varchar(30),no_of_stations int,bus_no int references bus(bus_no) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "route_pkey" for table "route"
+CREATE TABLE
+bcafy4=# \d route
+                Table "public.route"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ route_no       | integer               | not null
+ source         | character varying(30) | 
+ destination    | character varying(30) | 
+ no_of_stations | integer               | 
+ bus_no         | integer               | 
+Indexes:
+    "route_pkey" PRIMARY KEY, btree (route_no)
+Foreign-key constraints:
+    "route_bus_no_fkey" FOREIGN KEY (bus_no) REFERENCES bus(bus_no) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# create table bus_driver(bus_no int references bus(bus_no) on delete cascade on update cascade,driver_no int references driver(driver_no) on delete cascade on update cascade);
+CREATE TABLE
+bcafy4=# \d bus_driver
+    Table "public.bus_driver"
+  Column   |  Type   | Modifiers 
+-----------+---------+-----------
+ bus_no    | integer | 
+ driver_no | integer | 
+Foreign-key constraints:
+    "bus_driver_bus_no_fkey" FOREIGN KEY (bus_no) REFERENCES bus(bus_no) ON UPDATE CASCADE ON DELETE CASCADE
+    "bus_driver_driver_no_fkey" FOREIGN KEY (driver_no) REFERENCES driver(driver_no) ON UPDATE CASCADE ON DELETE CASCADE
+
+bcafy4=# drop table bus_driver;
+DROP TABLE
+bcafy4=# create table bus_driver(bus_no int references bus(bus_no) on delete cascade on update cascade,driver_no int references driver(driver_no) on delete cascade on update cascade 
+

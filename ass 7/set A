@@ -1,0 +1,83 @@
+bcafy2=# create table supplier_master(supplier_no int,supplier_name varchar(50),city varchar(20),phone_no int,amount float);
+CREATE TABLE
+bcafy2=# \d supplier_master
+           Table "public.supplier_master"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ supplier_no    | integer               | 
+ supplioer_name | character varying(50) | 
+ city           | character varying(20) | 
+ phone_no       | integer               | 
+ amount         | double precision      | 
+
+***********************************************************************************************************************************************************************
+
+bcafy2=# alter table supplier_master add primary key (supplier_no);
+NOTICE:  ALTER TABLE / ADD PRIMARY KEY will create implicit index "supplier_master_pkey" for table "supplier_master"
+ALTER TABLE
+bcafy2=# \d supplier_master
+           Table "public.supplier_master"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ supplier_no    | integer               | not null
+ supplioer_name | character varying(50) | 
+ city           | character varying(20) | 
+ phone_no       | integer               | 
+ amount         | double precision      | 
+Indexes:
+    "supplier_master_pkey" PRIMARY KEY, btree (supplier_no)
+
+************************************************************************************************************************************************************************
+bcafy2=# alter table supplier_master add check(city in('pune','mumbai'));
+ALTER TABLE
+bcafy2=# \d supplier_master
+           Table "public.supplier_master"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ supplier_no    | integer               | not null
+ supplioer_name | character varying(50) | 
+ city           | character varying(20) | 
+ phone_no       | integer               | 
+ amount         | double precision      | 
+Indexes:
+    "supplier_master_pkey" PRIMARY KEY, btree (supplier_no)
+Check constraints:
+    "supplier_master_city_check" CHECK (city::text = ANY (ARRAY['pune'::character varying, 'mumbai'::character varying]::text[]))
+ 
+***************************************************************************************************************************************************************
+
+bcafy2=# alter table supplier_master drop phone_no;
+ALTER TABLE
+bcafy2=# \d supplier_master
+           Table "public.supplier_master"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ supplier_no    | integer               | not null
+ supplioer_name | character varying(50) | 
+ city           | character varying(20) | 
+ amount         | double precision      | 
+Indexes:
+    "supplier_master_pkey" PRIMARY KEY, btree (supplier_no)
+Check constraints:
+    "supplier_master_city_check" CHECK (city::text = ANY (ARRAY['pune'::character varying, 'mumbai'::character varying]::text[]))
+
+**************************************************************************************************************************************************************
+
+bcafy2=# alter table supplier_master drop constraint supplier_master_city_check;
+ALTER TABLE
+bcafy2=# \d supplier_master
+           Table "public.supplier_master"
+     Column     |         Type          | Modifiers 
+----------------+-----------------------+-----------
+ supplier_no    | integer               | not null
+ supplioer_name | character varying(50) | 
+ city           | character varying(20) | 
+ amount         | double precision      | 
+Indexes:
+    "supplier_master_pkey" PRIMARY KEY, btree (supplier_no)
+
+**************************************************************************************************************************************************************
+
+bcafy2=# drop table supplier_master;
+DROP TABLE
+

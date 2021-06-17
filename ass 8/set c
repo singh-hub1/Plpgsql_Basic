@@ -1,0 +1,119 @@
+bcafy64=# create table machine(mno int primary key,nmae varchar(20),mtype text,mcost float);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "machine_pkey" for table "machine"
+CREATE TABLE
+bcafy64=# \d machine
+           Table "public.machine"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ mno    | integer               | not null
+ nmae   | character varying(20) | 
+ mtype  | text                  | 
+ mcost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (mno)
+bcafy64=# alter table machine  alter column name set NOT NULL;
+bcafy64=# \d machine
+           Table "public.machine"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ mno    | integer               | not null
+ nmae   | character varying(20) | 
+ mtype  | text                  | 
+ mcost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (mno)
+
+bcafy64=# alter table machine  alter column nmae set NOT NULL;
+ALTER TABLE
+bcafy64=# \d machine
+           Table "public.machine"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ mno    | integer               | not null
+ nmae   | character varying(20) | not null
+ mtype  | text                  | 
+ mcost  | double precision      | 
+Indexes:
+    "machine_pkey" PRIMARY KEY, btree (mno)
+
+bcafy64=# insert into machine values(1,'drilling','heavy',3000);
+INSERT 0 1
+bcafy64=# insert into machine values(2,'concrete_mixer','heavy',2000);
+INSERT 0 1
+bcafy64=# insert into machine values(3,'pump','small',8000);
+INSERT 0 1
+bcafy64=# insert into machine values(4,'engine','small',10000);
+INSERT 0 1
+bcafy64=# select * from machine;
+ mno |      nmae      | mtype | mcost 
+-----+----------------+-------+-------
+   1 | drilling       | heavy |  3000
+   2 | concrete_mixer | heavy |  2000
+   3 | pump           | small |  8000
+   4 | engine         | small | 10000
+(4 rows)
+
+bbcafy64=# update machine set mcost=mcost+(mcost*0.1);
+UPDATE 4
+bcafy64=# select * from machine;
+ mno |      nmae      | mtype | mcost 
+-----+----------------+-------+-------
+   1 | drilling       | heavy |  3300
+   2 | concrete_mixer | heavy |  2200
+   3 | pump           | small |  8800
+   4 | engine         | small | 11000
+(4 rows)
+
+bcafy64=# select * from part where mno in (select mno from machine where mcost>10001);
+ pno | pname | pdesc | mno 
+-----+-------+-------+-----
+   4 | gauge | large |   4
+(1 row)
+
+bcafy64=# select * from part where mno in (select mno from machine where mcost>1001);
+ pno | pname | pdesc | mno 
+-----+-------+-------+-----
+   1 | screw | small |   1
+   2 | screw | small |   2
+   3 | gauge | large |   3
+   4 | gauge | large |   4
+(4 rows)
+
+cafy2=# insert into part values(1,'screw','small',1);
+INSERT 0 1
+bcafy64=# insert into part values(2,'screw','small',2);
+INSERT 0 1
+bcafy64=# insert into part values(3,'gauge','large',3);
+INSERT 0 1
+bcafy64=# insert into part values(4,'gauge','large',4);
+INSERT 0 1
+bcafy64=# insert into part values(5,'valve','large',5);
+ERROR:  insert or update on table "part" violates foreign key constraint "part_mno_fkey"
+DETAIL:  Key (mno)=(5) is not present in table "machine".
+bcafy64=# select * from part;
+ pno | pname | pdesc | mno 
+-----+-------+-------+-----
+   1 | screw | small |   1
+   2 | screw | small |   2
+   3 | gauge | large |   3
+   4 | gauge | large |   4
+(4 rows)
+
+
+bcafy64=# create table part(pno int primary key,pname varchar(20),pdesc varchar(30),mno int references machine(mno) on delete cascade on update cascade);
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "part_pkey" for table "part"
+CREATE TABLE
+bcafy64=# \d part
+            Table "public.part"
+ Column |         Type          | Modifiers 
+--------+-----------------------+-----------
+ pno    | integer               | not null
+ pname  | character varying(20) | 
+ pdesc  | character varying(30) | 
+ mno    | integer               | 
+Indexes:
+    "part_pkey" PRIMARY KEY, btree (pno)
+Foreign-key constraints:
+    "part_mno_fkey" FOREIGN KEY (mno) REFERENCES machine(mno) ON UPDATE CASCADE ON DELETE CASCADE
+
+
